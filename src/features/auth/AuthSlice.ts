@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-interface Details {
+export interface Details {
     full_name: string;
     email: string;
     contact_phone: string;
@@ -8,10 +8,10 @@ interface Details {
     password: string;
 }
 
-interface LoginResponse {
+export interface LoginResponse {
 }
 
-interface RegisterResponse {
+export interface RegisterResponse {
 }
 
 export const apiSlice = createApi({
@@ -30,7 +30,7 @@ export const apiSlice = createApi({
                 url: '/register',
                 method: 'POST',
                 body: userData,
-            }),
+            }), src/ features / auth / AuthSlice.ts
         }),
     }),
 });

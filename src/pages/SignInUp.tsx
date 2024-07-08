@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import { SignIn } from '../components/SignIn';
 import { SignUp } from '../components/SignUp';
 
@@ -19,10 +19,11 @@ const switchPanel = [
   }
 ];
 
-const SignInUp: React.FC<SignInUpProps> = ({ onClose }) => {
-  const [activeForm, setActiveForm] = React.useState<'signin' | 'signup'>('signin'); // Changed default to 'signin'
+const SignInUp = ({ onClose }: SignInUpProps) => {
+  const [activeForm, setActiveForm] = useState<'signin' | 'signup'>('signin'); // Changed default to 'signin'
 
   const handleSignIn = () => {
+    setActiveForm('signin');
     setActiveForm('signin');
   };
 
