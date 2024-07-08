@@ -30,7 +30,7 @@ export const apiSlice = createApi({
                 url: '/register',
                 method: 'POST',
                 body: userData,
-            }), src/ features / auth / AuthSlice.ts
+            }),
         }),
     }),
 });
