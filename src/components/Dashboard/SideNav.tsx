@@ -1,10 +1,20 @@
 import { Link } from "react-router-dom";
 
-const SideNav = () => {
+interface SideNavProps {
+  onClose: () => void;
+}
+
+const SideNav = ({onClose}: SideNavProps) => {
   return (
-    <div className="sidenav h-screen w-64 bg-base-200 p-5">
-      <div className="sidenav-header mb-4 flex justify-center">
+    <div className="sidenav h-screen w-64 bg-base-200 p-5 grid content-between">
+      <div>
+      <div className="sidenav-header mb-4 flex justify-center ">
         <h2 className="text-xl font-bold"><Link to="/dashboard">Dashboard</Link></h2>
+        <button onClick={onClose} className="ml-auto mr-2 lg:hidden">
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
       </div>
       <div className="sidenav-center mt-10">
         <ul className="menu">
@@ -24,6 +34,7 @@ const SideNav = () => {
           <a href="#contact" className="menu-link">Contact</a>
         </li>
       </ul>
+      </div>
       </div>
       <div className="sidebar-bottom">
         <ul className="menu">
