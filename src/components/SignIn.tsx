@@ -1,15 +1,27 @@
 
 import { useState } from 'react';
 import { useLoginUserMutation } from '../features/auth/AuthSlice';
+import { useNavigate } from 'react-router-dom';
 
 export const SignIn = () => {
+
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginUser, { isLoading, isError, isSuccess }] = useLoginUserMutation();
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-    await loginUser({ email, password });
+    try {
+      const { data } = await loginUser({ email, password });
+
+      if (data) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+    }
+
   };
 
   return (
