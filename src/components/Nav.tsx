@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import SignInUp from '../pages/SignInUp'; 
+import { Link } from 'react-router-dom';
 
 const Nav = () => {
   const [showSignInUp, setShowSignInUp] = useState(false);
@@ -28,9 +29,9 @@ const Nav = () => {
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">
-          <li><a>Home</a></li>
-          <li><a>About Us</a></li>
-          <li><a>Contact Us</a></li>
+          <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
         </ul>
       </div>
       <div className="navbar-end hidden lg:flex">
@@ -47,9 +48,9 @@ const Nav = () => {
         <div className="lg:hidden w-1/2 absolute top-14 bg-blue-100 shadow-lg right-0 rounded-lg">
           <div className="flex flex-col items-start p-4 space-y-2">
             <ul className="menu menu-vertical w-full">
-              <li><a>Home</a></li>
-              <li><a>About Us</a></li>
-              <li><a>Contact Us</a></li>
+              <li><Link to="/">Home</Link></li>
+            <li><Link to="/about">About Us</Link></li>
+            <li><Link to="/contact">Contact Us</Link></li>
             </ul>
             <a className="btn w-full" onClick={handleAccountClick}>Account</a>
           </div>

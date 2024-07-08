@@ -1,9 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 interface Details {
-    name: string;
+    full_name: string;
     email: string;
-    phone: string;
+    contact_phone: string;
     address: string;
     password: string;
 }
@@ -16,7 +16,7 @@ interface RegisterResponse {
 
 export const apiSlice = createApi({
     reducerPath: 'api',
-    baseQuery: fetchBaseQuery({ baseUrl: '/api' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000' }),
     endpoints: (builder) => ({
         loginUser: builder.mutation<LoginResponse, { email: string; password: string }>({
             query: (credentials) => ({
