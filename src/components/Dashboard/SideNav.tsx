@@ -22,13 +22,13 @@ const SideNav = ({onClose}: SideNavProps) => {
           <Link to="/dashboard/vehicles">Vehicles</Link>
         </li>
         <li className="menu-item">
-          <a href="#contact" className="menu-link">Profile</a>
+          <Link to="/dashboard/profile">Profile</Link>
         </li>
         <li className="menu-item">
-          <a href="#about" className="menu-link">Messages</a>
+            <Link to="/dashboard/bookings">Bookings</Link>
         </li>
         <li className="menu-item">
-          <a href="#services" className="menu-link">History</a>
+         <Link to="/dashboard/messages">Messages</Link>
         </li>
         <li className="menu-item">
           <a href="#contact" className="menu-link">Contact</a>

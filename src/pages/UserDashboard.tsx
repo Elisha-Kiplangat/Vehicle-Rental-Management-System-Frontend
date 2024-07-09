@@ -9,6 +9,11 @@ const UserDashboard = () => {
 
  const [sideNavVisible, setSideNavVisible] = useState(false);
 
+  const [_searchQuery, setSearchQuery] = useState('');
+  const [unreadMessagesCount] = useState(0); 
+  const [profilePicture] = useState('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg');
+
+
   const toggleSideNav = () => {
     setSideNavVisible(!sideNavVisible);
   };
@@ -17,34 +22,30 @@ const UserDashboard = () => {
     setSideNavVisible(false);
   };
 
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+  };
+
   return (
     <div className="dashboard flex flex-row h-screen">
-      {/* Conditional rendering based on screen size and state */}
+      
       <div className={`md:flex ${sideNavVisible ? 'flex' : 'hidden'} absolute md:relative z-10 md:z-auto`}>
         <SideNav onClose={closeSideNav} />
       </div>
       <div className="flex-grow">
-        <Nav toggleSideNav={toggleSideNav} />
+        <Nav 
+        toggleSideNav={toggleSideNav} 
+        onSearchChange={handleSearchChange} 
+        unreadMessagesCount={unreadMessagesCount} 
+        profilePicture={profilePicture}
+      />
         <div className="main-content flex-grow p-4">
           <Outlet />
         </div>
       </div>
+      
     </div>
   );
-
-//     return (
-//     <div className="dashboard flex flex-row h-screen">
-//   <div className="hidden sm:flex">
-//     <SideNav />
-//   </div>
-//   <div className="flex-grow">
-//     <Nav />
-//     <div className="main-content flex-grow p-4">
-//       <Outlet />
-//     </div>
-//   </div>
-// </div>
-//     )
     
 }
 

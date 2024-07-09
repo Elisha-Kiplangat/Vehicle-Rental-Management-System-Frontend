@@ -1,14 +1,20 @@
-import React from 'react';
+
 
 interface NavProps {
   toggleSideNav: () => void;
+  onSearchChange: (query: string) => void;
+  unreadMessagesCount: number;
+  profilePicture: string;
 }
 
-const Nav: React.FC<NavProps> = ({ toggleSideNav }) => {
+const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePicture }: NavProps) => {
+  const handleSearch = (e: any) => {
+    onSearchChange(e.target.value);
+  };
+
   return (
     <div className="navbar bg-blue-400 h-12 flex pr-5">
       <div className="container flex justify-between">
-        {/* Hamburger Menu */}
         <div className="flex items-center md:hidden">
           <button onClick={toggleSideNav} className="btn btn-ghost btn-circle">
             <svg
@@ -26,7 +32,12 @@ const Nav: React.FC<NavProps> = ({ toggleSideNav }) => {
           </button>
         </div>
         <div className="form-control flex flex-row justify-center">
-          <input type="text" placeholder="Search" className="input input-bordered rounded-r-none h-10 w-24 md:w-auto" />
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered rounded-r-none h-10 w-24 md:w-auto"
+            onChange={handleSearch}
+          />
           <button className="bg-blue-100 rounded-l-none rounded-r-lg h-10 w-8 flex justify-center items-center">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -59,11 +70,13 @@ const Nav: React.FC<NavProps> = ({ toggleSideNav }) => {
                       strokeWidth="2"
                       d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
-                  <span className="badge badge-xs badge-primary indicator-item"></span>
+                  {unreadMessagesCount > 0 && (
+                    <span className="badge badge-xs badge-primary indicator-item">{unreadMessagesCount}</span>
+                  )}
                 </div>
               </button>
               <ul className="menu absolute menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 p-2 shadow space-y-2">
-                <li><a> Notifications</a></li>
+                <li><a>Notifications</a></li>
               </ul>
             </div>
           </div>
@@ -71,9 +84,7 @@ const Nav: React.FC<NavProps> = ({ toggleSideNav }) => {
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img
-                    alt="Tailwind CSS Navbar component"
-                    src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                  <img alt="Profile" src={profilePicture} />
                 </div>
               </div>
               <ul className="menu menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 shadow space-y-2 right-0">
@@ -86,6 +97,6 @@ const Nav: React.FC<NavProps> = ({ toggleSideNav }) => {
       </div>
     </div>
   );
-}
+};
 
 export default Nav;
