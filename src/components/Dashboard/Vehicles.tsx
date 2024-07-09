@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import image from '../../assets/Audi.jpeg';
 import CarFilter from './CarFilter'; 
+
+
 interface Tvehicles {
   id: number;
   name: string;
@@ -12,6 +14,7 @@ interface Tvehicles {
 
 const Vehicles = () => {
   const [filter, setFilter] = useState({ vehicleType: 'All', location: 'All' });
+
 
   const vehicles: Tvehicles[] = [
     {
@@ -47,7 +50,7 @@ const Vehicles = () => {
   const filteredVehicles = vehicles.filter(
     (vehicle) =>
       (filter.vehicleType === 'All' || vehicle.name === filter.vehicleType) &&
-      (filter.location === 'All' || vehicle.location === filter.location)
+      (filter.location === 'All' || vehicle.location === filter.location) 
   );
 
   return (

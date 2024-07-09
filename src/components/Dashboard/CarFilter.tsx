@@ -42,3 +42,4 @@ const CarFilter = ({ onFilterChange }: CarFilterProps) => {
 };
 
 export default CarFilter;
+
