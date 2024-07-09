@@ -20,7 +20,7 @@ const switchPanel = [
 ];
 
 const SignInUp = ({ onClose }: SignInUpProps) => {
-  const [activeForm, setActiveForm] = useState<'signin' | 'signup'>('signin'); // Changed default to 'signin'
+  const [activeForm, setActiveForm] = useState<'signin' | 'signup'>('signin');
 
   const handleSignIn = () => {
     setActiveForm('signin');
