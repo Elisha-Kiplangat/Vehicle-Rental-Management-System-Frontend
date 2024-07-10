@@ -1,55 +1,41 @@
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import UserDashboard from "./pages/UserDashboard";
 import About from "./pages/About";
 import Vehicles from "./components/Dashboard/Vehicles";
-import Profile from './components/Dashboard/Profile'
+import Profile from './components/Dashboard/Profile';
 import Bookings from "./components/Dashboard/Bookings";
 import Messages from "./components/Dashboard/Messages";
+import AdminDashboard from "./pages/AdminDashboard";
+import BookingsHistory from "./components/AdminDashboard/BookingsHistory";
+import Customers from "./components/AdminDashboard/Customers";
+import VehiclesData from "./components/AdminDashboard/VehiclesData";
+import MessageSupport from "./components/AdminDashboard/MessageSupport";
+import Reports from './components/AdminDashboard/Reports';
 
-const App = () => {
-
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: <Home />
-
-    },
-    {
-      path: "/about",
-      element: <About />
-
-    },
-    {
-      path: "/dashboard",
-      element: <UserDashboard />,
-      children: [
-        {
-          path: "",
-          element: <Navigate to="vehicles" replace />
-        },
-        {
-          path: "vehicles",
-          element: <Vehicles />
-        },
-        {
-          path: "Bookings",
-          element: <Bookings />
-        },
-        {
-          path: "Profile",
-          element: <Profile />
-        },
-        {
-          path: "Messages",
-          element: <Messages />
-        }
-      ]
-    }
-  ])
-
+const App: React.FC = () => {
   return (
-    <RouterProvider router={router} />
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/about" element={<About />} />
+        <Route path="/dashboard/user" element={<UserDashboard />}>
+          <Route path="" element={<Navigate to="vehicles" replace />} />
+          <Route path="vehicles" element={<Vehicles />} />
+          <Route path="bookings" element={<Bookings />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
+        </Route>
+        <Route path="/dashboard/admin" element={<AdminDashboard />}>
+          <Route path="vehicles" element={<VehiclesData />} />
+          <Route path="messages" element={<MessageSupport />} />
+          <Route path="bookings" element={<BookingsHistory />} />
+          <Route path="customers" element={<Customers />} />
+          <Route path="reports" element={<Reports />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 
