@@ -1,12 +1,12 @@
 
 import { Container, Typography, Button } from '@mui/material';
+import { Message, useFetchMessagesQuery } from '../../features/MessagesApi';
 
 const MessageSupport = () => {
-  const messages = [
-    { id: 1, sender: 'John Doe', subject: 'Vehicle Inquiry', date: '2023-07-01' },
-    { id: 2, sender: 'Jane Smith', subject: 'Booking Issue', date: '2023-07-02' },
-    
-  ];
+  const { data: messages, error, isLoading } = useFetchMessagesQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading messages</div>;
 
   return (
     <Container>
@@ -18,19 +18,19 @@ const MessageSupport = () => {
         <table className="min-w-full bg-white shadow-md rounded my-6">
           <thead>
             <tr className="bg-gray-200">
-              <th className="border px-4 py-2">ID</th>
-              <th className="border px-4 py-2">Sender</th>
+              <th className="border px-4 py-2">User ID</th>
               <th className="border px-4 py-2">Subject</th>
-              <th className="border px-4 py-2">Date</th>
+              <th className="border px-4 py-2">Description</th>
+              <th className="border px-4 py-2">Status</th>
             </tr>
           </thead>
           <tbody>
-            {messages.map((message) => (
-              <tr key={message.id}>
-                <td className="border px-4 py-2">{message.id}</td>
-                <td className="border px-4 py-2">{message.sender}</td>
+            {messages.map((message: Message) => (
+              <tr key={message.user_id}>
+                <td className="border px-4 py-2">{message.user_id}</td>
                 <td className="border px-4 py-2">{message.subject}</td>
-                <td className="border px-4 py-2">{message.date}</td>
+                <td className="border px-4 py-2">{message.description}</td>
+                <td className="border px-4 py-2">{message.status}</td>
               </tr>
             ))}
           </tbody>
