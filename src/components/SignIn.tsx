@@ -16,7 +16,13 @@ export const SignIn = () => {
     try {
       const data = await loginUser({ email, password }).unwrap();
       dispatch(setUser(data));
-      navigate('/dashboard');
+      localStorage.setItem('token', data.token);
+
+      if (data.role === 'user') {
+        navigate('/dashboard/user');
+      } else {
+        navigate('/dashboard/admin');
+      }
     } catch (error) {
       console.error('Login error:', error);
     }
