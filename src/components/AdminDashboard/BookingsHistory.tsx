@@ -1,12 +1,14 @@
-
 import { Container, Typography, Button } from '@mui/material';
+import { useFetchBookingsQuery } from '../../features/BookingAPI';
+// import { useDispatch } from 'react-redux';
+import {Booking} from '../../features/BookingAPI'
 
 const BookingsHistory = () => {
-  const bookingsData = [
-    { booking_id: 1, vehicle_name: 'Toyota Camry', booking_date: '2023-07-01', return_date: '2023-07-05', amount: 200, status: 'Confirmed' },
-    { booking_id: 2, vehicle_name: 'Honda Accord', booking_date: '2023-07-02', return_date: '2023-07-06', amount: 250, status: 'Pending' },
-    
-  ];
+  const { data: bookingsData, error, isLoading } = useFetchBookingsQuery();
+  // const dispatch = useDispatch();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading bookings</div>;
 
   return (
     <Container>
@@ -27,7 +29,7 @@ const BookingsHistory = () => {
             </tr>
           </thead>
           <tbody>
-            {bookingsData.map((booking) => (
+            {bookingsData?.map((booking: Booking) => (
               <tr key={booking.booking_id}>
                 <td className="border px-4 py-2">{booking.booking_id}</td>
                 <td className="border px-4 py-2">{booking.vehicle_name}</td>
