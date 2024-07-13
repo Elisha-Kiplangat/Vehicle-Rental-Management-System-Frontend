@@ -1,4 +1,4 @@
-import React from "react";
+
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import UserDashboard from "./pages/UserDashboard";
@@ -13,13 +13,15 @@ import Customers from "./components/AdminDashboard/Customers";
 import VehiclesData from "./components/AdminDashboard/VehiclesData";
 import MessageSupport from "./components/AdminDashboard/MessageSupport";
 import Reports from './components/AdminDashboard/Reports';
+import Contact from "./pages/Contact";
 
-const App: React.FC = () => {
+const App = () => {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
         <Route path="/dashboard/user" element={<UserDashboard />}>
           <Route path="" element={<Navigate to="vehicles" replace />} />
           <Route path="vehicles" element={<Vehicles />} />

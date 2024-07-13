@@ -26,7 +26,6 @@ const bookingsData: Booking[] = [
     amount: 400,
     status: 'Pending',
   },
-  // Add more bookings as needed
 ];
 
 const Bookings = () => {

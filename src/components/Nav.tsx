@@ -24,7 +24,7 @@ const Nav = () => {
       <div className="navbar bg-blue-100 relative z-10 p-4 lg:px-10">
       <div className="navbar-start">
         <div tabIndex={0} role="button" className="btn btn-ghost">
-          Car Rental
+          SpeedyCar
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
