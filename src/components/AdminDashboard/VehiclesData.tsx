@@ -1,12 +1,12 @@
 
 import { Container, Typography, Button } from '@mui/material';
+import { useFetchVehiclesQuery, Vehicle } from '../../features/VehiclesAPI';
 
 const VehiclesData = () => {
-  const vehicles = [
-    { id: 1, make: 'Toyota', model: 'Camry', year: 2020 },
-    { id: 2, make: 'Honda', model: 'Accord', year: 2021 },
-    // Add more vehicles as needed
-  ];
+  const { data: vehicles, error, isLoading } = useFetchVehiclesQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading vehicles</div>;
 
   return (
     <Container>
@@ -19,18 +19,18 @@ const VehiclesData = () => {
           <thead>
             <tr className="bg-gray-200">
               <th className="border px-4 py-2">ID</th>
-              <th className="border px-4 py-2">Make</th>
-              <th className="border px-4 py-2">Model</th>
-              <th className="border px-4 py-2">Year</th>
+              <th className="border px-4 py-2">Specification ID</th>
+              <th className="border px-4 py-2">Rental Rate</th>
+              <th className="border px-4 py-2">Availability</th>
             </tr>
           </thead>
           <tbody>
-            {vehicles.map((vehicle) => (
-              <tr key={vehicle.id}>
-                <td className="border px-4 py-2">{vehicle.id}</td>
-                <td className="border px-4 py-2">{vehicle.make}</td>
-                <td className="border px-4 py-2">{vehicle.model}</td>
-                <td className="border px-4 py-2">{vehicle.year}</td>
+            {vehicles.map((vehicle: Vehicle) => (
+              <tr key={vehicle.vehicle_id}>
+                <td className="border px-4 py-2">{vehicle.vehicle_id}</td>
+                <td className="border px-4 py-2">{vehicle.vehicle_specification_id}</td>
+                <td className="border px-4 py-2">{vehicle.rental_rate}</td>
+                <td className="border px-4 py-2">{vehicle.availability}</td>
               </tr>
             ))}
           </tbody>
