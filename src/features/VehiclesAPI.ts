@@ -9,6 +9,20 @@ export interface Vehicle {
     vehicle_specification_id: number;
 }
 
+interface VehicleSpec {
+    model: string;
+    fuel_type: string | null;
+    seating_capacity: number;
+}
+
+export interface TVehicleDetails {
+    vehicle_id: number;
+    vehicle_specification_id: number;
+    rental_rate: number;
+    availability: boolean;
+    vehicle_spec: VehicleSpec;
+}
+
 export const vehiclesApi = createApi({
     reducerPath: 'vehiclesApi',
     baseQuery: fetchBaseQuery({
@@ -27,6 +41,10 @@ export const vehiclesApi = createApi({
             query: () => '/vehicles',
             providesTags: ['Vehicle'],
         }),
+        fetchVehicleDetails: builder.query<TVehicleDetails[], void>({
+            query: () => '/vehicleDetails',
+            providesTags: ['Vehicle'],
+        }),
         addVehicle: builder.mutation<Vehicle, Partial<Vehicle>>({
             query: (newVehicle) => ({
                 url: '/vehicles',
@@ -38,8 +56,9 @@ export const vehiclesApi = createApi({
     }),
 });
 
-export const { useFetchVehiclesQuery, useAddVehicleMutation } = vehiclesApi as {
+export const { useFetchVehiclesQuery, useFetchVehicleDetailsQuery, useAddVehicleMutation } = vehiclesApi as {
     useFetchVehiclesQuery: () => ReturnType<typeof vehiclesApi.endpoints.fetchVehicles.useQuery>;
     useAddVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.addVehicle.useMutation>
+    useFetchVehicleDetailsQuery: (options?: {pollingInterval?: number; skipPollingIfUnfocused?: boolean;}) => ReturnType<typeof vehiclesApi.endpoints.fetchVehicleDetails.useQuery>
 
 };

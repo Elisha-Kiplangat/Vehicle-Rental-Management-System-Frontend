@@ -16,7 +16,7 @@ const userSlice = createSlice({
     initialState,
     reducers: {
         setUser: (state, action: PayloadAction<LoginResponse>) => {
-            state.id = action.payload.id;
+            state.id = action.payload.user_id;
             state.token = action.payload.token;
         },
         clearUser: (state) => {
