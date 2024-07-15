@@ -5,7 +5,11 @@ import { useFetchVehiclesQuery, Vehicle } from '../../features/VehiclesAPI';
 const VehiclesData = () => {
   const { data: vehicles, error, isLoading } = useFetchVehiclesQuery();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+   return <div className="flex justify-center items-center h-screen">
+      <div className="spinner"></div> {<span className="loading loading-spinner text-info"></span>}
+    </div>;
+  }
   if (error) return <div>Error loading vehicles</div>;
 
   return (
