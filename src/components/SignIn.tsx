@@ -17,6 +17,7 @@ export const SignIn = () => {
       const data = await loginUser({ email, password }).unwrap();
       dispatch(setUser(data));
       localStorage.setItem('token', data.token);
+      localStorage.setItem('user_id', data.user_id.toString());
 
       if (data.role === 'user') {
         navigate('/dashboard/user');
