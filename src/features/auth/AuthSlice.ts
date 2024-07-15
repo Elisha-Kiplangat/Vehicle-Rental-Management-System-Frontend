@@ -10,13 +10,13 @@ export interface UserDetails {
 }
 
 export interface Tuser {
-    id: number;
+    user_id: number;
     name: string;
     email: string;
 }
 
 export interface Tcustomers {
-    id: number;
+    user_id: number;
     full_name: string;
     email: string;
     contact_phone: string;
@@ -26,7 +26,7 @@ export interface Tcustomers {
 export type UsersResponse = Tuser;
 
 export interface LoginResponse {
-    id: number;
+    user_id: number;
     token: string;
     role: string
 }
@@ -62,6 +62,12 @@ export const apiSlice = createApi({
                 body: userData,
             }),
         }),
+        logout: builder.mutation<void, void>({
+            query: () => ({
+                url: 'logout',
+                method: 'POST',
+            }),
+        }),
         getUser: builder.query<Tuser, number>({
             query: (id) => `users/${id}`,
         }),
@@ -69,12 +75,29 @@ export const apiSlice = createApi({
         getAllUsers: builder.query<Tcustomers, void>({
             query: () => 'users',
         }),
+        updateUser: builder.mutation({
+            query: (user) => ({
+                url: `user/update/${user.id}`,
+                method: 'PUT',
+                body: user,
+            }),
+        }),
+        deleteUser: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `user/delete/${id}`,
+                method: 'DELETE',
+            }),
+        }),
+
     }),
 });
 
-export const { useLoginUserMutation, useRegisterUserMutation, useGetUserQuery, useGetAllUsersQuery } = apiSlice as unknown as {
+export const { useLoginUserMutation, useRegisterUserMutation, useGetUserQuery, useGetAllUsersQuery, useUpdateUserMutation, useLogoutMutation, useDeleteUserMutation } = apiSlice as unknown as {
     useLoginUserMutation: () => ReturnType<typeof apiSlice.endpoints.loginUser.useMutation>;
     useRegisterUserMutation: () => ReturnType<typeof apiSlice.endpoints.registerUser.useMutation>;
-    useGetUserQuery: () => ReturnType<typeof apiSlice.endpoints.getUser.useQuery>;
+    useGetUserQuery: (id: number, options?: { pollingInterval?: number }) => ReturnType<typeof apiSlice.endpoints.getUser.useQuery>;
     useGetAllUsersQuery: () => ReturnType<typeof apiSlice.endpoints.getAllUsers.useQuery>;
+    useLogoutMutation: () => ReturnType<typeof apiSlice.endpoints.logout.useMutation>;
+    useUpdateUserMutation: (id: number) => ReturnType<typeof apiSlice.endpoints.updateUser.useMutation>;
+    useDeleteUserMutation: (id: number) => ReturnType<typeof apiSlice.endpoints.deleteUser.useMutation>;
 };

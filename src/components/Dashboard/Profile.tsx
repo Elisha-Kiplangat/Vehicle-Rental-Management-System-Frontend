@@ -1,49 +1,81 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
+import { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } from '../../features/auth/AuthSlice';
+import { toast, Toaster } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 interface UserProfile {
-  name: string;
+  id: number;
+  full_name: string;
   email: string;
-  phone: string;
+  contact_phone: string;
   address: string;
-  profilePicture: string; 
+  profilePicture: string;
 }
 
-const initialProfile: UserProfile = {
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '123-456-7890',
-  address: '123 Main St, Anytown, USA',
-  profilePicture: 'https://via.placeholder.com/150',
-};
-
 const Profile = () => {
-  const [profile, setProfile] = useState<UserProfile>(initialProfile);
+
+  const navigate = useNavigate();
+  const userId = localStorage.getItem('user_id');
+  // const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
+  const pollingInterval = 10000;
+  const { data: user, error, isLoading } = useGetUserQuery(Number(userId), { pollingInterval });
+  
+  const [updateUser] = useUpdateUserMutation(Number(userId));
+  const [deleteUser] = useDeleteUserMutation(Number(userId));
+
+  const [profile, setProfile] = useState<UserProfile | null>(null);
   const [editMode, setEditMode] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleChange = (e: any) => {
+  useEffect(() => {
+    if (user) {
+      setProfile({
+        id: user.user_id,
+        full_name: user.full_name,
+        email: user.email,
+        contact_phone: user.contact_phone,
+        address: user.address,
+        profilePicture: 'https://via.placeholder.com/150',
+      });
+    }
+  }, [user]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setProfile({ ...profile, [name]: value });
+    setProfile(prevProfile => prevProfile ? { ...prevProfile, [name]: value } : null);
   };
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
       reader.onload = (event) => {
-        setProfile({ ...profile, profilePicture: event.target?.result as string });
+        setProfile(prevProfile => prevProfile ? { ...prevProfile, profilePicture: event.target?.result as string } : null);
       };
       reader.readAsDataURL(e.target.files[0]);
     }
   };
 
-  const handleSubmit = (e: any) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setEditMode(false);
-    console.log('Profile updated:', profile);
+    if (profile) {
+      try {
+        await updateUser(profile).unwrap();
+        setEditMode(false);
+        toast.success('Profile updated successfully!');
+      } catch (error) {
+        toast.error('Failed to update profile.');
+      }
+    }
   };
 
-  const handleDeleteAccount = () => {
-    console.log('Account deleted');
+  const handleDeleteAccount = async () => {
+    try {
+      await deleteUser(Number(userId)).unwrap();
+      toast.success('Sad to see you go :) Account deleted successfully!');
+      navigate('/');
+    } catch (error) {
+      toast.error('Failed to delete account.');
+    }
   };
 
   const triggerFileInput = () => {
@@ -52,20 +84,31 @@ const Profile = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <span className="loading loading-spinner text-info"></span>
+      </div>
+    );
+  }
+
+  if (error) return <p>Error loading profile</p>;
+
   return (
     <div className="container mx-auto p-4">
+      <Toaster />
       <h2 className="text-2xl font-semibold mb-4">Profile</h2>
       <div className="flex flex-col md:flex-row items-center">
         <form onSubmit={handleSubmit} className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full md:w-3/4">
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="full_name">
               Name
             </label>
             <input
               type="text"
-              id="name"
-              name="name"
-              value={profile.name}
+              id="full_name"
+              name="full_name"
+              value={profile?.full_name || ''}
               onChange={handleChange}
               disabled={!editMode}
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
@@ -81,20 +124,20 @@ const Profile = () => {
               type="email"
               id="email"
               name="email"
-              value={profile.email}
+              value={profile?.email || ''}
               disabled
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight bg-gray-100"
             />
           </div>
           <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="contact_phone">
               Phone
             </label>
             <input
               type="text"
-              id="phone"
-              name="phone"
-              value={profile.phone}
+              id="contact_phone"
+              name="contact_phone"
+              value={profile?.contact_phone || ''}
               onChange={handleChange}
               disabled={!editMode}
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
@@ -110,7 +153,7 @@ const Profile = () => {
               type="text"
               id="address"
               name="address"
-              value={profile.address}
+              value={profile?.address || ''}
               onChange={handleChange}
               disabled={!editMode}
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline ${
@@ -146,7 +189,7 @@ const Profile = () => {
         </form>
         <div className="relative ml-0 md:ml-8 mt-4 md:mt-0">
           <img
-            src={profile.profilePicture}
+            src={profile?.profilePicture || 'https://via.placeholder.com/150'}
             alt="Profile"
             className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-md"
           />
