@@ -2,11 +2,11 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export interface Booking {
     booking_id: number;
-    vehicle_name: string;
+    vehicle_id: string;
     booking_date: string;
     return_date: string;
-    amount: number;
-    status: string;
+    total_amount: number;
+    booking_status: string;
 }
 
 export const bookingApi = createApi({
@@ -27,6 +27,10 @@ export const bookingApi = createApi({
             query: () => '/bookings',
             providesTags: ['Booking'],
         }),
+        fetchBookingById: builder.query<Booking, number>({
+            query: (userId) => `/bookings/${userId}`, 
+            
+        }),
         addBooking: builder.mutation<Booking, Partial<Booking>>({
             query: (newBooking) => ({
                 url: '/bookings',
@@ -38,7 +42,7 @@ export const bookingApi = createApi({
     }),
 });
 
-export const { useFetchBookingsQuery, useAddBookingMutation } = bookingApi as {
+export const { useFetchBookingsQuery, useFetchBookingByIdQuery } = bookingApi as unknown as {
+    useFetchBookingByIdQuery: (id: number, options?: { pollingInterval?: number }) => ReturnType<typeof bookingApi.endpoints.fetchBookingById.useQuery>;
     useFetchBookingsQuery: () => ReturnType<typeof bookingApi.endpoints.fetchBookings.useQuery>;
-    useAddBookingMutation: () => ReturnType<typeof bookingApi.endpoints.addBooking.useMutation>
-};
+}
