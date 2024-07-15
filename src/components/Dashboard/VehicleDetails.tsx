@@ -1,13 +1,17 @@
+import image from '../../assets/Audi.jpeg'
 
 
 interface VehicleDetailsProps {
   vehicle: {
-    name: string;
-    type: string;
-    color: string;
-    location: string;
+    vehicle_id: number;
+    rental_rate: number;
+    availability: boolean;
+    vehicle_spec: {
+      model: string;
+      fuel_type: string | null;
+      seating_capacity: number;
+    };
     image?: string;
-    description?: string;
   };
   onRent: (vehicle: any) => void; 
   onBack: () => void;
@@ -15,34 +19,29 @@ interface VehicleDetailsProps {
 
 const VehicleDetails = ({ vehicle, onRent, onBack }: VehicleDetailsProps) => {
   return (
-    <div className="max-w-1/2 mx-auto mt-10 bg-white rounded-lg overflow-hidden shadow-md flex justify-center items-center">
-      <div className="flex justify-between items-center">
+    <div className="max-w-1/2 mx-auto mt-10 bg-white rounded-lg overflow-hidden shadow-md">
+      <div className="flex justify-around items-center">
         <div className="w-1/2 p-4">
           <img
-            src={vehicle.image}
-            alt={vehicle.name}
+            src={image}
+            alt={vehicle.vehicle_spec.model}
             className="w-full h-auto rounded-lg shadow-md"
           />
         </div>
         <div className="w-1/2 p-4 flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">{vehicle.name}</h2>
+          <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.model}</h2>
           <p>
-            <strong>Type:</strong> {vehicle.type}
+            <strong>Fuel Type:</strong> {vehicle.vehicle_spec.fuel_type || 'Unknown'}
           </p>
           <p>
-            <strong>Color:</strong> {vehicle.color}
+            <strong>Seating Capacity:</strong> {vehicle.vehicle_spec.seating_capacity}
           </p>
           <p>
-            <strong>Location:</strong> {vehicle.location}
+            <strong>Rental Rate:</strong> ${vehicle.rental_rate} per day
           </p>
-          <div className="mt-4">
-            {vehicle.description && (
-              <>
-                <p className="text-gray-700 mb-2"><strong>Description:</strong></p>
-                <p className="text-gray-700">{vehicle.description}</p>
-              </>
-            )}
-          </div>
+          <p>
+            <strong>Availability:</strong> {vehicle.availability ? 'Available' : 'Not Available'}
+          </p>
           <div className="flex justify-between mt-4">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
