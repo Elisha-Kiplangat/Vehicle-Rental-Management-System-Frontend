@@ -7,7 +7,11 @@ const BookingsHistory = () => {
   const { data: bookingsData, error, isLoading } = useFetchBookingsQuery();
   // const dispatch = useDispatch();
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) {
+   return <div className="flex justify-center items-center h-screen">
+      <div className="spinner"></div> {<span className="loading loading-spinner text-info"></span>}
+    </div>;
+  }
   if (error) return <div>Error loading bookings</div>;
 
   return (
