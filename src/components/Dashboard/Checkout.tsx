@@ -21,14 +21,13 @@ interface CheckoutProps {
 const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
-  const [paymentMethod, setPaymentMethod] = useState<string>('M-Pesa');
+  const [paymentMethod, setPaymentMethod] = useState<string>('Card');
 
   const calculateAmount = () => {
     if (!startDate || !endDate) return 0;
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     return days * vehicle.rental_rate;
   };
-
   const handleRentNow = () => {
     const amount = calculateAmount();
     console.log('Processing rental for vehicle:', vehicle);
@@ -90,7 +89,7 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
         >
           <option value="M-Pesa">M-Pesa</option>
           <option value="Credit Card">Credit Card</option>
-          <option value="Paypal">Paypal</option>
+          {/* <option value="Paypal">Paypal</option> */}
         </select>
       </div>
 

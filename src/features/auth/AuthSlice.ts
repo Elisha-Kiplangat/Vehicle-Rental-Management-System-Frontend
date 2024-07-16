@@ -101,3 +101,4 @@ export const { useLoginUserMutation, useRegisterUserMutation, useGetUserQuery, u
     useUpdateUserMutation: (id: number) => ReturnType<typeof apiSlice.endpoints.updateUser.useMutation>;
     useDeleteUserMutation: (id: number) => ReturnType<typeof apiSlice.endpoints.deleteUser.useMutation>;
 };
+
