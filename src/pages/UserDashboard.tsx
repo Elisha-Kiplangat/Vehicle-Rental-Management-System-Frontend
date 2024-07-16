@@ -48,10 +48,10 @@ const UserDashboard = () => {
   return (
     <div className="dashboard flex flex-row h-screen">
       
-      <div className={`md:flex ${sideNavVisible ? 'flex' : 'hidden'} absolute md:relative z-10 md:z-auto`}>
+      <div className={`fixed md:flex ${sideNavVisible ? 'flex' : 'hidden'} absolute md:relative z-10 md:z-auto`}>
         <SideNav onClose={closeSideNav} />
       </div>
-      <div className="flex-grow">
+      <div className="flex-grow flex flex-col">
         <Nav 
         toggleSideNav={toggleSideNav} 
         onSearchChange={handleSearchChange} 
@@ -59,7 +59,7 @@ const UserDashboard = () => {
         profilePicture={profilePicture}
         // email={data?.email}
       />
-        <div className="main-content flex-grow p-4">
+        <div className="main-content flex-grow p-4 overflow-y-auto mt-16 md:mt-0">
           <Outlet />
         </div>
       </div>
