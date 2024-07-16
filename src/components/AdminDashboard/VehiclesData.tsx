@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
-import { useFetchVehiclesQuery, Vehicle } from '../../features/VehiclesAPI';
+import { useFetchVehicleDetailsQuery, TVehicleDetails } from '../../features/VehiclesAPI';
 import AddVehicle from '../AddVehicle';
+import image from '../../assets/Audi.jpeg';
 
 const VehiclesData = () => {
   const [showForm, setShowForm] = useState(false);
-  const { data: vehicles, error, isLoading } = useFetchVehiclesQuery();
+  const pollingInterval = 1000;
+  const { data: vehicles, error, isLoading } = useFetchVehicleDetailsQuery({ pollingInterval });
 
   const handleButtonClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
@@ -30,28 +32,41 @@ const VehiclesData = () => {
         {showForm ? 'Close Form' : 'Add Vehicle'}
       </Button>
       {showForm && <AddVehicle />}
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white shadow-md rounded my-6">
-          <thead>
-            <tr className="bg-gray-200">
-              <th className="border px-4 py-2">ID</th>
-              <th className="border px-4 py-2">Specification ID</th>
-              <th className="border px-4 py-2">Rental Rate</th>
-              <th className="border px-4 py-2">Availability</th>
-            </tr>
-          </thead>
-          <tbody>
-            {vehicles.map((vehicle: Vehicle) => (
-              <tr key={vehicle.vehicle_id}>
-                <td className="border px-4 py-2">{vehicle.vehicle_id}</td>
-                <td className="border px-4 py-2">{vehicle.vehicle_specification_id}</td>
-                <td className="border px-4 py-2">{vehicle.rental_rate}</td>
-                <td className="border px-4 py-2">{vehicle.availability ? 'Yes' : 'No'}</td>
-              </tr>
+      
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+            {vehicles.map((vehicle: TVehicleDetails) => (
+              <div
+                key={vehicle.vehicle_id}
+                className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white border border-gray-200 p-4"
+              >
+                <img src={ `${image}`} alt={'image'} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                  <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.model}</h2>
+                  <p className="text-gray-700 mb-1">Vehicle ID:{vehicle.vehicle_id}</p>
+                  <p className="text-gray-700 mb-1">Rental Rate: {vehicle.rental_rate }</p>
+                  <p className="text-gray-700 mb-1">Fuel Type:{vehicle.vehicle_spec.fuel_type}</p>
+                  <p className="text-gray-700 mb-1">Seating Capacity: {vehicle.vehicle_spec.seating_capacity}</p>
+                  <p className="text-gray-700 mb-1">Rental Rate: ${vehicle.rental_rate} per day</p>
+                  <p className="text-gray-700 mb-4">Availability: {vehicle.availability ? 'Yes' : 'No'}</p>
+                  <div className="flex flex-row ">
+                  <button
+                    className="w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-0 px-4 mr-5 rounded"
+                    // onClick={() => handleViewDetails(vehicle)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="w-1/2 bg-red-400 hover:bg-red-500 text-white font-bold py-0 px-4 ml-5 rounded"
+                    // onClick={() => handleViewDetails(vehicle)}
+                  >
+                    Delete
+                  </button>
+
+                  </div>
+                </div>
+              </div>
             ))}
-          </tbody>
-        </table>
-      </div>
+          </div>
     </Container>
   );
 };
