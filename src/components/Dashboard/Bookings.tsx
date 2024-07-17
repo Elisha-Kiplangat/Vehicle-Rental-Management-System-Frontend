@@ -1,11 +1,11 @@
 
-import { useFetchBookingByIdQuery } from '../../features/BookingAPI';
+import { useFetchBookingByIdQuery, Booking } from '../../features/BookingAPI';
 
 const Bookings = () => {
     const userId = localStorage.getItem('user_id');
     const pollingInterval = 10000;
     const { data: booking, error, isLoading } = useFetchBookingByIdQuery(Number(userId), { pollingInterval });
-
+    console.log(booking)
 
     if (isLoading) {
    return <div className="flex justify-center items-center h-screen">
@@ -15,7 +15,7 @@ const Bookings = () => {
   if (error) return <div>Error loading bookings</div>;
     return (
         <div className="overflow-x-auto">
-            {booking ? (
+
                 <table className="min-w-full bg-white">
                     <thead>
                         <tr className="bg-gray-200">
@@ -27,7 +27,10 @@ const Bookings = () => {
                             <th className="border px-4 py-2">Status</th>
                         </tr>
                     </thead>
+                    
                     <tbody>
+                        
+                    {booking.map((booking: Booking) => (
                         <tr key={booking.booking_id}>
                             <td className="border px-4 py-2">{booking.booking_id}</td>
                             <td className="border px-4 py-2">{booking.vehicle_id}</td>
@@ -36,11 +39,10 @@ const Bookings = () => {
                             <td className="border px-4 py-2">${booking.total_amount}</td>
                             <td className="border px-4 py-2">{booking.booking_status}</td>
                         </tr>
+                    ))}
                     </tbody>
                 </table>
-            ) : (
-                <div>No booking found for user with ID {userId}</div>
-            )}
+             
         </div>
     );
 };

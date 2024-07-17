@@ -1,10 +1,24 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useLogoutMutation } from "../../features/auth/AuthSlice";
 
 interface SideNavProps {
   onClose: () => void;
 }
 
 const SideNav = ({onClose}: SideNavProps) => {
+
+  const navigate = useNavigate();
+  const [logout] = useLogoutMutation();
+
+  const handleLogout = async () => {
+try {
+      await logout().unwrap();
+      navigate('/');
+    } catch (error) {
+      console.error('Failed to logout:', error);
+    }
+  }
+  
   return (
     <div className="sidenav h-screen w-64 bg-base-200 p-5 grid content-between">
       <div>
@@ -60,7 +74,7 @@ const SideNav = ({onClose}: SideNavProps) => {
             Settings</a>
         </li>
         <li className="menu-item">
-          <a href="#logout" className="menu-link">
+          <a className="menu-link" onClick={handleLogout}>
             <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 11-4 0v-1a2 2 0 114 0zm2-11a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
