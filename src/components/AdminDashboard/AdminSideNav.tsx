@@ -19,7 +19,7 @@ const AdminSideNav = ({ onClose }: SideNavProps) => {
         <div className="sidenav-center mt-10">
           <ul className="menu">
             <li className="menu-item">
-              <Link to="vehicles">
+              <Link to="">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 7h18M3 7a1 1 0 001-1V4a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 001 1M3 7v10m18-10v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7m0 0h18" />
                 </svg>
