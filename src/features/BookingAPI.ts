@@ -42,7 +42,8 @@ export const bookingApi = createApi({
     }),
 });
 
-export const { useFetchBookingsQuery, useFetchBookingByIdQuery } = bookingApi as unknown as {
+export const { useFetchBookingsQuery, useFetchBookingByIdQuery, useAddBookingMutation } = bookingApi as unknown as {
     useFetchBookingByIdQuery: (id: number, options?: { pollingInterval?: number }) => ReturnType<typeof bookingApi.endpoints.fetchBookingById.useQuery>;
     useFetchBookingsQuery: () => ReturnType<typeof bookingApi.endpoints.fetchBookings.useQuery>;
+    useAddBookingMutation: () => ReturnType<typeof bookingApi.endpoints.addBooking.useMutation>;
 }
