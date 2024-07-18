@@ -11,7 +11,7 @@ export interface Message {
 export const messagesApi = createApi({
     reducerPath: 'messagesApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000',
+        baseUrl: 'https://vehicle-rental-management-system-api.onrender.com',
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             if (token) {
