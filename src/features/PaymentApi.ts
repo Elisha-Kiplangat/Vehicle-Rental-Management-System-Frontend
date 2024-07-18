@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export const paymentsApi = createApi({
   reducerPath: 'paymentsApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:8000' }),
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://vehicle-rental-management-system-api.onrender.com/' }),
   endpoints: (builder) => ({
     createCheckoutSession: builder.mutation({
       query: (payload) => ({
