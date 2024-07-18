@@ -26,7 +26,7 @@ export interface TVehicleDetails {
 export const vehiclesApi = createApi({
     reducerPath: 'vehiclesApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000',
+        baseUrl: 'https://vehicle-rental-management-system-api.onrender.com/',
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             if (token) {
