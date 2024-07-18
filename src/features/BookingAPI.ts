@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export interface Booking {
     booking_id: number;
-    vehicle_id: string;
+    vehicle_id: number;
     booking_date: string;
     return_date: string;
     total_amount: number;
@@ -12,7 +12,7 @@ export interface Booking {
 export const bookingApi = createApi({
     reducerPath: 'bookingApi',
     baseQuery: fetchBaseQuery({
-        baseUrl: 'http://localhost:8000',
+        baseUrl: 'https://vehicle-rental-management-system-api.onrender.com',
         prepareHeaders: (headers) => {
             const token = localStorage.getItem('token');
             if (token) {

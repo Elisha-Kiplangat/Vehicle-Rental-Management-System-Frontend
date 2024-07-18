@@ -36,13 +36,13 @@ const BookingsHistory = () => {
             {bookingsData?.map((booking: Booking) => (
               <tr key={booking.booking_id}>
                 <td className="border px-4 py-2">{booking.booking_id}</td>
-                <td className="border px-4 py-2">{booking.vehicle_name}</td>
+                <td className="border px-4 py-2">{booking.vehicle_id}</td>
                 <td className="border px-4 py-2">{booking.booking_date}</td>
                 <td className="border px-4 py-2">{booking.return_date}</td>
-                <td className="border px-4 py-2">${booking.amount}</td>
-                <td className="border px-4 py-2">{booking.status}</td>
+                <td className="border px-4 py-2">Ksh.{booking.total_amount}</td>
+                <td className="border px-4 py-2">{booking.booking_status}</td>
               </tr>
-            ))}
+            ))} 
           </tbody>
         </table>
       </div>
