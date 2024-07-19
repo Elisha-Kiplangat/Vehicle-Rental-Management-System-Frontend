@@ -9,7 +9,8 @@ export interface Vehicle {
     vehicle_specification_id: number;
 }
 
-interface VehicleSpec {
+export interface VehicleSpec {
+    vehicle_type: string;
     model: string;
     fuel_type: string | null;
     seating_capacity: number;

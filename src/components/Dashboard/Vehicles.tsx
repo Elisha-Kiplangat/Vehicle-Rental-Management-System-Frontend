@@ -41,7 +41,7 @@ const Vehicles = () => {
 
   const filteredVehicles = vehicles?.filter(
     (vehicle: TVehicleDetails) =>
-      (filter.vehicleType === 'All' || vehicle.vehicle_spec.model === filter.vehicleType) &&
+      (filter.vehicleType === 'All' || vehicle.vehicle_spec.vehicle_type === filter.vehicleType) &&
       (filter.seatingCapacity === 'All' || vehicle.vehicle_spec.seating_capacity === parseInt(filter.seatingCapacity))
   );
 

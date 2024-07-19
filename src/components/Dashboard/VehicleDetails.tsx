@@ -7,6 +7,7 @@ interface VehicleDetailsProps {
     rental_rate: number;
     availability: boolean;
     vehicle_spec: {
+      vehicle_type: string;
       model: string;
       fuel_type: string | null;
       seating_capacity: number;
@@ -29,7 +30,7 @@ const VehicleDetails = ({ vehicle, onRent, onBack }: VehicleDetailsProps) => {
           />
         </div>
         <div className="w-1/2 p-4 flex flex-col">
-          <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.model}</h2>
+          <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.vehicle_type}:<i>{vehicle.vehicle_spec.model}</i></h2>
           <p>
             <strong>Fuel Type:</strong> {vehicle.vehicle_spec.fuel_type || 'Unknown'}
           </p>
