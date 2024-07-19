@@ -25,10 +25,9 @@ const CarFilter = ({ onFilterChange }: CarFilterProps) => {
       <label className='mr-4' htmlFor="vehicleTypeFilter">Filter by model:</label>
       <select className='bg-blue-100 rounded-sm mr-10' id="vehicleTypeFilter" value={selectedVehicleType} onChange={handleVehicleTypeChange}>
         <option value="All">All</option>
-        <option value="Cybertruck">Cybertruck</option>
-        <option value="Model S">Model S</option>
-        <option value="Model 3">Model 3</option>
-        {/* Add more models as needed */}
+        <option value="Car">Car</option>
+        <option value="Bike">Bike</option>
+        {/* <option value="Model 3">Model 3</option> */}
       </select>
 
       <label className='mr-4' htmlFor="seatingCapacityFilter">Filter by seating capacity:</label>
@@ -37,7 +36,6 @@ const CarFilter = ({ onFilterChange }: CarFilterProps) => {
         <option value="2">2</option>
         <option value="4">4</option>
         <option value="5">5</option>
-        {/* Add more seating capacities as needed */}
       </select>
     </div>
   );
