@@ -6,6 +6,9 @@ import { bookingApi } from '../features/BookingAPI';
 import { vehiclesApi } from '../features/VehiclesAPI';
 import { messagesApi } from '../features/MessagesApi';
 import { paymentsApi } from '../features/PaymentApi';
+import { fleetApi } from '../features/FleetApi';
+import { locationApi } from '../features/LocationsApi';
+import { branchesApi } from '../features/BranchesApi';
 
 export const store = configureStore({
     reducer: {
@@ -14,10 +17,15 @@ export const store = configureStore({
         [vehiclesApi.reducerPath]: vehiclesApi.reducer,
         [messagesApi.reducerPath]: messagesApi.reducer,
         [paymentsApi.reducerPath]: paymentsApi.reducer, 
+        [fleetApi.reducerPath]: fleetApi.reducer, 
+        [locationApi.reducerPath]: locationApi.reducer,
+        [branchesApi.reducerPath]: branchesApi.reducer,
         user: userReducer,
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(apiSlice.middleware, bookingApi.middleware, vehiclesApi.middleware, messagesApi.middleware, paymentsApi.middleware),
+        getDefaultMiddleware().concat(apiSlice.middleware, bookingApi.middleware, vehiclesApi.middleware, messagesApi.middleware, paymentsApi.middleware,
+            fleetApi.middleware, locationApi.middleware, branchesApi.middleware
+        ),
 });
 
 setupListeners(store.dispatch);

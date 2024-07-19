@@ -14,6 +14,9 @@ import VehiclesData from "./components/AdminDashboard/VehiclesData";
 import MessageSupport from "./components/AdminDashboard/MessageSupport";
 import Reports from './components/AdminDashboard/Reports';
 import Contact from "./pages/Contact";
+import FleetManagement from "./components/AdminDashboard/FleetManagement";
+import Locations from "./components/AdminDashboard/Locations";
+import Branches from "./components/AdminDashboard/Branches";
 
 const App = () => {
   return (
@@ -35,6 +38,9 @@ const App = () => {
           <Route path="bookings" element={<BookingsHistory />} />
           <Route path="customers" element={<Customers />} />
           <Route path="reports" element={<Reports />} />
+          <Route path="fleets" element={<FleetManagement />} />
+          <Route path="locations" element={<Locations />} />
+          <Route path="branches" element={<Branches />} />
         </Route>
       </Routes>
     </Router>

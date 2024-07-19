@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useAddVehicleMutation } from '../features/VehiclesAPI';
 
 interface VehicleSpecs {
+  vehicle_type: string;
   manufacturer: string;
   model: string;
   year: number;
@@ -17,6 +18,7 @@ interface VehicleSpecs {
 
 const AddVehicle = () => {
   const [formData, setFormData] = useState<VehicleSpecs>({
+    vehicle_type: '',
     manufacturer: '',
     model: '',
     year: 2020,
@@ -46,6 +48,7 @@ const AddVehicle = () => {
       await addVehicle({...formData, availability: formData.availability.toString()}).unwrap();
       
       setFormData({
+        vehicle_type: '',
         manufacturer: '',
         model: '',
         year: 2020,
@@ -65,8 +68,23 @@ const AddVehicle = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 bg-white shadow-md rounded">
+    <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 bg-gray-200 shadow-md rounded">
      
+      <div className="mb-4">
+        <label htmlFor="vehicle_type" className="block text-gray-700">Vehicle Type</label>
+        <select
+          name="vehicle_type"
+          value={formData.vehicle_type}
+          onChange={handleChange}
+          className="mt-1 block w-full px-3 py-2 border rounded-md"
+          required
+        >
+          <option value="" disabled>Select</option>
+          <option value="car">Car</option>
+          <option value="bike">Bike</option>
+        </select>
+      </div>
+
       <div className="mb-4">
         <label htmlFor="manufacturer" className="block text-gray-700">Manufacturer</label>
         <input
