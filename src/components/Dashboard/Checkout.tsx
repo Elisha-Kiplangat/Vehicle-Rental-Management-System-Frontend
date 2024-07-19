@@ -1,6 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Container } from '@mui/material';
-import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import 'daisyui/dist/full.css';
 import { useCreateCheckoutSessionMutation } from '../../features/PaymentApi';
@@ -26,17 +25,24 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
   const [paymentMethod, setPaymentMethod] = useState<string>('Card');
   const [createCheckoutSession] = useCreateCheckoutSessionMutation();
   const [createBooking] = useAddBookingMutation();
+  const [amountToPay, setAmountToPay] = useState<number>(0);
 
   const calculateAmount = () => {
     if (!startDate || !endDate) return 0;
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    return days * vehicle.rental_rate;
+    const amount = days * vehicle.rental_rate;
+    setAmountToPay(amount * 100000);
   };
+    useEffect(() => {
+    calculateAmount();
+  }, [startDate, endDate, vehicle.rental_rate]);
 
   const handleRentNow = async () => {
-    const amount = calculateAmount();
-    const amount1 = amount * 100000;
-    console.log('Amount to be paid:', amount1);
+    // const amount = calculateAmount();
+    //  const calculatedAmount = amount * 100000;
+    // setAmountToPay(calculatedAmount);
+    // console.log('Amount to be paid:', calculatedAmount);
+
 
     const userIdStr = localStorage.getItem('user_id');
     if (!userIdStr) {
@@ -62,7 +68,7 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
         location_id: 6, 
         booking_date: bookingDate,
         return_date: returnDate,
-        total_amount: amount1,
+        total_amount: amountToPay,
         booking_status: 'pending',
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString(),
@@ -77,7 +83,7 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
         }
 
         const paymentPayload = {
-            amount: amount1,
+            amount: amountToPay,
             currency: 'kes',
             booking_id: bookingId
         };
@@ -106,27 +112,33 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
       <div className='flex flex-row'>
         <div className="mb-4 mr-12">
           <label className="block mb-2 font-bold">Start date</label>
-          <DatePicker
-            selected={startDate}
-            onChange={(date: any) => setStartDate(date)}
-            className="input input-bordered w-full"
+          
+          <input 
+            type="datetime-local" 
+            className="input input-bordered w-full" 
+            value={startDate ? startDate.toISOString().slice(0, 16) : ''} 
+            onChange={(e) => setStartDate(new Date(e.target.value))} 
           />
+
         </div>
 
         <div className="mb-4">
           <label className="block mb-2">End date</label>
-          <DatePicker
-            selected={endDate}
-            onChange={(date: any) => setEndDate(date)}
-            className="input input-bordered w-full"
+                   
+          <input 
+            type="datetime-local" 
+            className="input input-bordered w-full" 
+            value={endDate ? endDate.toISOString().slice(0, 16) : ''} 
+            onChange={(e) => setEndDate(new Date(e.target.value))} 
           />
+
         </div>
       </div>
       <div className="mb-4">
         <label className="block mb-2">Amount to pay</label>
         <input
           type="text"
-          value={calculateAmount()}
+          value= {amountToPay}
           readOnly
           className="input input-bordered w-full"
         />
