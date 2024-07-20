@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { useGetUserQuery } from '../../features/auth/AuthSlice';
 
 interface NavProps {
@@ -12,7 +12,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
   const userId = localStorage.getItem('user_id');
   const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
 
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearch = (e: any) => {
     onSearchChange(e.target.value);
   };
 
@@ -35,6 +35,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
             </svg>
           </button>
         </div>
+        <div></div>
         <div className="form-control flex flex-row justify-center">
           <input
             type="text"
