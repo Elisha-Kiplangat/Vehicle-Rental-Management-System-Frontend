@@ -1,21 +1,18 @@
-
-// import { useGetUserQuery } from '../../features/auth/AuthSlice';
+import React from 'react';
+import { useGetUserQuery } from '../../features/auth/AuthSlice';
 
 interface NavProps {
   toggleSideNav: () => void;
   onSearchChange: (query: string) => void;
   unreadMessagesCount: number;
   profilePicture: string;
-  // email?: string;
 }
 
-const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePicture  }: NavProps) => {
-  
-//   const userId = localStorage.getItem('user_id')
-//   const { data: user } = useGetUserQuery(Number(userId));
-  
-  
-  const handleSearch = (e: any) => {
+const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePicture }: NavProps) => {
+  const userId = localStorage.getItem('user_id');
+  const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     onSearchChange(e.target.value);
   };
 
@@ -95,9 +92,16 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
                 </div>
               </div>
               <ul className="menu menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 shadow space-y-2 right-0">
-                <li><a>example@gmail.com</a></li>
-                {/* <li><a>{user.email}</a></li> */}
-                <li><a>Logout</a></li>
+                {isLoading ? (
+                  <li><a>Loading...</a></li>
+                ) : error ? (
+                  <li><a>Error loading user</a></li>
+                ) : (
+                  <>
+                    <li><a>{user?.email || 'No email'}</a></li>
+                    <li><a>Logout</a></li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
