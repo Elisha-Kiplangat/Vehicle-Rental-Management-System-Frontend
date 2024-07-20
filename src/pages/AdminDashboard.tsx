@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 const AdminDashboard = () => {
   const [sideNavVisible, setSideNavVisible] = useState(false);
 
-  const [_searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
   const [unreadMessagesCount] = useState(0); 
   const [profilePicture] = useState('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg');
   const [loading, setLoading] = useState(true); 
@@ -51,7 +51,7 @@ const AdminDashboard = () => {
         profilePicture={profilePicture}
       />
         <div className="main-content flex-grow p-4 overflow-y-auto mt-16 md:mt-0">
-          <Outlet />
+          <Outlet context={{ searchQuery: searchQuery }}/>
         </div>
       </div>
       
