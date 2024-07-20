@@ -5,16 +5,19 @@ import CarFilter from './CarFilter';
 import VehicleDetails from './VehicleDetails'; 
 import Checkout from './Checkout';
 import { useFetchVehicleDetailsQuery, TVehicleDetails } from '../../features/VehiclesAPI';
+import { useOutletContext } from 'react-router-dom';
 
 const Vehicles = () => {
   const [filter, setFilter] = useState({ vehicleType: 'All', seatingCapacity: 'All' });
   const [selectedVehicle, setSelectedVehicle] = useState<TVehicleDetails | null>(null);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
+  
+  const { searchQuery } = useOutletContext<{ searchQuery: string }>();
 
   const { data: vehicles, error, isLoading } = useFetchVehicleDetailsQuery({ pollingInterval: 3000, skipPollingIfUnfocused: true });
 
   if (isLoading) {
-   return <div className="flex justify-center items-center h-screen">
+    return <div className="flex justify-center items-center h-screen">
       <div className="spinner"></div> {<span className="loading loading-spinner text-info"></span>}
     </div>;
   }
@@ -42,7 +45,8 @@ const Vehicles = () => {
   const filteredVehicles = vehicles?.filter(
     (vehicle: TVehicleDetails) =>
       (filter.vehicleType === 'All' || vehicle.vehicle_spec.vehicle_type === filter.vehicleType) &&
-      (filter.seatingCapacity === 'All' || vehicle.vehicle_spec.seating_capacity === parseInt(filter.seatingCapacity))
+      (filter.seatingCapacity === 'All' || vehicle.vehicle_spec.seating_capacity === parseInt(filter.seatingCapacity)) &&
+      (vehicle.vehicle_spec.model.toLowerCase().includes(searchQuery.toLowerCase()) || vehicle.vehicle_spec.fuel_type?.toLowerCase().includes(searchQuery.toLowerCase()))
   );
 
   return (

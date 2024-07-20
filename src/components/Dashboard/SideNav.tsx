@@ -20,7 +20,7 @@ try {
   }
   
   return (
-    <div className="sidenav h-screen w-64 bg-base-200 p-5 grid content-between">
+    <div className="sidenav h-screen w-60 bg-base-200 p-5 grid content-between">
       <div>
       <div className="sidenav-header mb-4 flex justify-center ">
         <h2 className="text-xl font-bold"><Link to="/dashboard">Dashboard</Link></h2>
