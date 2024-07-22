@@ -10,6 +10,7 @@ import { fleetApi } from '../features/FleetApi';
 import { locationApi } from '../features/LocationsApi';
 import { branchesApi } from '../features/BranchesApi';
 import { summaryApi } from '../features/summaryApi'
+import authReducer from '../features/auth/AuthContext'
 
 export const store = configureStore({
     reducer: {
@@ -23,6 +24,7 @@ export const store = configureStore({
         [branchesApi.reducerPath]: branchesApi.reducer,
         [summaryApi.reducerPath]: summaryApi.reducer,
         user: userReducer,
+        auth: authReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(apiSlice.middleware, bookingApi.middleware, vehiclesApi.middleware, messagesApi.middleware, paymentsApi.middleware,

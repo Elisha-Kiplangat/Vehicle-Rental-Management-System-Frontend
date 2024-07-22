@@ -18,22 +18,28 @@ import FleetManagement from "./components/AdminDashboard/FleetManagement";
 import Locations from "./components/AdminDashboard/Locations";
 import Branches from "./components/AdminDashboard/Branches";
 import AdminHome from "./components/AdminDashboard/AdminHome";
+import ErrorPage from "./pages/ErrorPage";
+import { store } from "./app/Store";
+import { Provider } from "react-redux";
+import PrivateRoute from "./features/auth/PrivateRoute";
 
 const App = () => {
   return (
+    <Provider store={store}>
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="/dashboard/user" element={<UserDashboard />}>
+        <Route path="/dashboard/user" element={<PrivateRoute><UserDashboard /></PrivateRoute>}>
           <Route path="" element={<Navigate to="vehicles" replace />} />
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
         </Route>
-        <Route path="/dashboard/admin" element={<AdminDashboard />}>
+        <Route path="/dashboard/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>}>
+          <Route path="" element={<Navigate to="home" replace />} />
           <Route path="home" element={<AdminHome />} />
           <Route path="vehicles" element={<VehiclesData />} />
           <Route path="messages" element={<MessageSupport />} />
@@ -44,8 +50,10 @@ const App = () => {
           <Route path="locations" element={<Locations />} />
           <Route path="branches" element={<Branches />} />
         </Route>
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
     </Router>
+    </Provider>
   );
 };
 
