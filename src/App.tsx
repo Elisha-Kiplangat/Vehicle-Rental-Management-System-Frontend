@@ -19,7 +19,7 @@ import Locations from "./components/AdminDashboard/Locations";
 import Branches from "./components/AdminDashboard/Branches";
 import AdminHome from "./components/AdminDashboard/AdminHome";
 import ErrorPage from "./pages/ErrorPage";
-import { store } from "./app/Store";
+import { store } from "./app/store";
 import { Provider } from "react-redux";
 import PrivateRoute from "./features/auth/PrivateRoute";
 
