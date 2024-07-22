@@ -94,10 +94,10 @@ const AdminSideNav = ({ onClose }: SideNavProps) => {
       <div className="sidebar-bottom">
         <ul className="menu font-bold"> 
           <li className="menu-item mb-2">
-            <a href="#settings" className="menu-link">
+            <Link to='profile'>
               <FontAwesomeIcon icon={faCog} className="mr-2 text-blue-700" />
-              Settings
-            </a>
+              Profile
+            </Link>
           </li>
           <li className="menu-item">
             <Link to="/" onClick={handleLogOut}>

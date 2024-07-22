@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Container, Typography, Button } from '@mui/material';
-import { useFetchLocationsQuery } from '../../features/LocationsApi';
+import { Container, Typography, Button, Box } from '@mui/material';
+import { useFetchLocationsQuery, useAddLocationMutation } from '../../features/LocationsApi';
 
 interface Location {
   location_id: number;
@@ -11,10 +11,14 @@ interface Location {
 }
 
 const Locations = () => {
-  const { data: locations, error, isLoading } = useFetchLocationsQuery();
+  const pollingInterval = 10000;
+  const { data: locations, error, isLoading } = useFetchLocationsQuery({pollingInterval});
+  const [addLocation] = useAddLocationMutation();
   const [selectedLocations, setSelectedLocations] = useState<number[]>([]);
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [expandedLocationId, setExpandedLocationId] = useState<number | null>(null);
+  const [showAddForm, setShowAddForm] = useState<boolean>(false);
+  const [newLocation, setNewLocation] = useState({ name: '', address: '' });
 
   const handleSelectAll = () => {
     if (selectAll) {
@@ -35,6 +39,21 @@ const Locations = () => {
     setExpandedLocationId(expandedLocationId === id ? null : id);
   };
 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setNewLocation({ ...newLocation, [e.target.name]: e.target.value });
+  };
+
+  const handleAddLocation = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await addLocation(newLocation).unwrap();
+      setNewLocation({ name: '', address: '' });
+      setShowAddForm(false);
+    } catch (err) {
+      console.error('Failed to add location: ', err);
+    }
+  };
+
   const areAnySelected = selectedLocations.length > 0;
 
   if (isLoading) {
@@ -52,14 +71,45 @@ const Locations = () => {
       <Typography variant="h4" gutterBottom>
         Locations
       </Typography>
-      <Button variant="contained" color="primary">Add Location</Button>
+      <Button variant="contained" color="primary" onClick={() => setShowAddForm(!showAddForm)}>
+        {showAddForm ? 'Cancel' : 'Add Location'}
+      </Button>
       {areAnySelected && (
         <>
           <Button variant="contained" color="secondary" style={{ marginLeft: '10px' }}>Edit</Button>
           <Button variant="contained" color="error" style={{ marginLeft: '10px' }}>Delete</Button>
         </>
       )}
-      <div className="overflow-x-auto">
+      {showAddForm && (
+        <Box component="form" onSubmit={handleAddLocation} sx={{ mt: 2 }}>
+          <div className="mb-4">
+            <label htmlFor="name" className="block text-sm font-medium text-gray-700">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={newLocation.name}
+              onChange={handleChange}
+              className="mt-1 p-2 block w-1/2 shadow-sm sm:text-sm border-blue-300 rounded-md"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+            <input
+              id="address"
+              name="address"
+              type="text"
+              value={newLocation.address}
+              onChange={handleChange}
+              className="mt-1 p-2 block w-1/2 shadow-sm sm:text-sm border-blue-300 rounded-md"
+              required
+            />
+          </div>
+          <Button type="submit" variant="contained" color="primary">Save</Button>
+        </Box>
+      )}
+      <div className="overflow-x-auto mt-4">
         <table className="table">
           <thead>
             <tr>
@@ -106,9 +156,9 @@ const Locations = () => {
                   </td>
                 </tr>
                 {expandedLocationId === location.location_id && (
-                  <tr key={location.location_id}>
+                  <tr key={`${location.location_id}-details`}>
                     <td></td>
-                    <td colSpan={6}>
+                    <td colSpan={4}>
                       <table className="table">
                         <thead>
                           <tr>
