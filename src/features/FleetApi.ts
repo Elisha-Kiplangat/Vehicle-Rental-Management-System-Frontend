@@ -1,15 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-export interface Fleet  {
-    Fleet_id: number;
-    status: string;
-    depreciation_rate: number;
-    current_value: number;
-    maintenance_cost: number;
-    created_at: string ;
-    updated_at: string ;
+export interface Fleet {
     fleet_id: number;
+    vehicle_id: number;
+    maintenance_cost: string;
+    status: string;
+    current_value: string;
     acquisition_date: string;
+    depreciation_rate: string;
+    created_at: string;
+    updated_at: string;
 }
 
 export const fleetApi = createApi({
@@ -32,16 +32,34 @@ export const fleetApi = createApi({
         }),
         addFleet: builder.mutation<Fleet, Partial<Fleet>>({
             query: (newFleet) => ({
-                url: '/add/fleets',
+                url: '/fleets',
                 method: 'POST',
                 body: newFleet,
+            }),
+            invalidatesTags: ['fleet'],
+        }),
+        updateFleet: builder.mutation<Fleet, Partial<Fleet>>({
+            query: (updatedFleet) => ({
+                url: `/fleets/${updatedFleet.fleet_id}`,
+                method: 'PUT',
+                body: updatedFleet,
+            }),
+            invalidatesTags: ['fleet'],
+        }),
+        deleteFleet: builder.mutation<void, number>({
+            query: (fleetId) => ({
+                url: `/fleets/delete/${fleetId}`,
+                method: 'DELETE',
             }),
             invalidatesTags: ['fleet'],
         }),
     }),
 });
 
-export const { useFetchFleetsQuery } = fleetApi as {
-    useFetchFleetsQuery: (options?: { pollingInterval?: number; skipPollingIfUnfocused?: boolean; }) => ReturnType<typeof fleetApi.endpoints.fetchFleets.useQuery>
+export const { useFetchFleetsQuery, useAddFleetMutation, useUpdateFleetMutation, useDeleteFleetMutation } = fleetApi as {
+    useFetchFleetsQuery: (options?: { pollingInterval?: number; skipPollingIfUnfocused?: boolean; }) => ReturnType<typeof fleetApi.endpoints.fetchFleets.useQuery>;
+    useAddFleetMutation: () => ReturnType<typeof fleetApi.endpoints.addFleet.useMutation>;
+    useUpdateFleetMutation: () => ReturnType<typeof fleetApi.endpoints.updateFleet.useMutation>;
+    useDeleteFleetMutation: () => ReturnType<typeof fleetApi.endpoints.deleteFleet.useMutation>;
 
 };

@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { useAddVehicleMutation } from '../features/VehiclesAPI';
+import { useState, useEffect } from 'react';
+import { useAddVehicleMutation, useUpdateVehicleMutation } from '../features/VehiclesAPI';
+import { TVehicleDetails } from '../features/VehiclesAPI';
 
 interface VehicleSpecs {
   vehicle_type: string;
@@ -16,7 +17,12 @@ interface VehicleSpecs {
   availability: boolean;
 }
 
-const AddVehicle = () => {
+interface AddVehicleProps {
+  vehicleToEdit?: TVehicleDetails | null;
+  onClose: () => void;
+}
+
+const AddVehicle = ({ vehicleToEdit, onClose }: AddVehicleProps) => {
   const [formData, setFormData] = useState<VehicleSpecs>({
     vehicle_type: '',
     manufacturer: '',
@@ -32,21 +38,26 @@ const AddVehicle = () => {
     availability: true,
   });
 
-  const [addVehicle, { isLoading }] = useAddVehicleMutation();
+  const [addVehicle, { isLoading: isAdding }] = useAddVehicleMutation();
+  const [updateVehicle, { isLoading: isUpdating }] = useUpdateVehicleMutation();
 
-  const handleChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
-    setFormData({
-      ...formData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
-  };
-
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-    try {
-      await addVehicle({...formData, availability: formData.availability.toString()}).unwrap();
-      
+  useEffect(() => {
+    if (vehicleToEdit) {
+      setFormData({
+        vehicle_type: vehicleToEdit.vehicle_spec.vehicle_type,
+        manufacturer: vehicleToEdit.vehicle_spec.manufacturer,
+        model: vehicleToEdit.vehicle_spec.model,
+        year: vehicleToEdit.vehicle_spec.year,
+        fuel_type: vehicleToEdit.vehicle_spec.fuel_type,
+        engine_capacity: vehicleToEdit.vehicle_spec.engine_capacity,
+        transmission: vehicleToEdit.vehicle_spec.transmission,
+        seating_capacity: vehicleToEdit.vehicle_spec.seating_capacity,
+        color: vehicleToEdit.vehicle_spec.color,
+        features: vehicleToEdit.vehicle_spec.features,
+        rental_rate: vehicleToEdit.rental_rate,
+        availability: vehicleToEdit.availability,
+      });
+    } else {
       setFormData({
         vehicle_type: '',
         manufacturer: '',
@@ -61,15 +72,58 @@ const AddVehicle = () => {
         rental_rate: 0,
         availability: true,
       });
+    }
+  }, [vehicleToEdit]);
+
+  const handleChange = (e: any) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === 'checkbox' ? checked : value,
+    });
+  };
+
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    try {
+      if (vehicleToEdit) {
+        const submissionData = {
+      ...formData,
+      availability: formData.availability.toString(),
+    };
+        await updateVehicle({ vehicle_id: vehicleToEdit.vehicle_id, vehicle: submissionData }).unwrap();
+        console.log('Vehicle updated successfully');
+      } else {
+        const submissionData = {
+          ...formData,
+          availability: formData.availability.toString(),
+        };
+        await addVehicle(submissionData).unwrap();
+        console.log('Vehicle added successfully');
+      }
+
+      setFormData({
+        vehicle_type: '',
+        manufacturer: '',
+        model: '',
+        year: 2020,
+        fuel_type: '',
+        engine_capacity: '',
+        transmission: '',
+        seating_capacity: 0,
+        color: '',
+        features: '',
+        rental_rate: 0,
+        availability: true,
+      });
+      onClose();
     } catch (error) {
-      console.error('Failed to add vehicle: ', error);
-      
+      console.error('Failed to save vehicle: ', error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto p-4 bg-gray-200 shadow-md rounded">
-     
       <div className="mb-4">
         <label htmlFor="vehicle_type" className="block text-gray-700">Vehicle Type</label>
         <select
@@ -204,7 +258,7 @@ const AddVehicle = () => {
         />
       </div>
 
-       <div className="mb-4">
+      <div className="mb-4">
         <label htmlFor="availability" className="block text-gray-700">Availability</label>
         <input
           type="checkbox"
@@ -213,11 +267,11 @@ const AddVehicle = () => {
           onChange={handleChange}
           className="mt-1 block"
         />
-      </div> 
+      </div>
 
       <div className="mb-4">
-        <button type="submit" className="w-full px-3 py-2 bg-blue-500 text-white rounded-md" disabled={isLoading}>
-          {isLoading ? 'Adding...' : 'Add Vehicle'}
+        <button type="submit" className="w-full px-3 py-2 bg-blue-500 text-white rounded-md" disabled={isAdding || isUpdating}>
+          {isAdding || isUpdating ? (vehicleToEdit ? 'Updating...' : 'Adding...') : (vehicleToEdit ? 'Update Vehicle' : 'Add Vehicle')}
         </button>
       </div>
     </form>

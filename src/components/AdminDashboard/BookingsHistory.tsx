@@ -3,7 +3,8 @@ import { useFetchBookingsQuery, Booking } from '../../features/BookingAPI';
 import { useState } from 'react';
 
 const BookingsHistory = () => {
-  const { data: bookingsData, error, isLoading } = useFetchBookingsQuery();
+  const pollingInterval = 10000;
+  const { data: bookingsData, error, isLoading } = useFetchBookingsQuery({pollingInterval});
   const [currentPage, setCurrentPage] = useState(0);
   const bookingsPerPage = 10;
 
