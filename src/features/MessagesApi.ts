@@ -26,6 +26,10 @@ export const messagesApi = createApi({
             query: () => '/supportTickets',
             providesTags: ['Message'],
         }),
+        fetchMessagesUser: builder.query<Message, number>({
+            query: (user_id) => `/supportTickets/${user_id}`
+
+        }),
         addMessage: builder.mutation<Message, Partial<Message>>({
             query: (newMessage) => ({
                 url: '/supportTickets',
@@ -37,7 +41,8 @@ export const messagesApi = createApi({
     }),
 });
 
-export const { useFetchMessagesQuery, useAddMessageMutation } = messagesApi as {
+export const { useFetchMessagesQuery, useAddMessageMutation, useFetchMessagesUserQuery } = messagesApi as {
     useFetchMessagesQuery: () => ReturnType<typeof messagesApi.endpoints.fetchMessages.useQuery>;
     useAddMessageMutation: () => ReturnType<typeof messagesApi.endpoints.addMessage.useMutation>
+    useFetchMessagesUserQuery: (user_id: number, options?: { pollingInterval?: number }) => ReturnType<typeof messagesApi.endpoints.fetchMessagesUser.useQuery>
 };

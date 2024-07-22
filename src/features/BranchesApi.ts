@@ -29,7 +29,7 @@ export const branchesApi = createApi({
         }),
         addBranches: builder.mutation<Branches, Partial<Branches>>({
             query: (newbranches) => ({
-                url: '/add/branches',
+                url: '/branches',
                 method: 'POST',
                 body: newbranches,
             }),
@@ -38,7 +38,7 @@ export const branchesApi = createApi({
     }),
 });
 
-export const { useFetchBranchesQuery } = branchesApi as {
+export const { useFetchBranchesQuery, useAddBranchesMutation } = branchesApi as {
     useFetchBranchesQuery: (options?: { pollingInterval?: number; skipPollingIfUnfocused?: boolean; }) => ReturnType<typeof branchesApi.endpoints.fetchBranches.useQuery>
-
+    useAddBranchesMutation: () => ReturnType<typeof branchesApi.endpoints.addBranches.useMutation>
 };

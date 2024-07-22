@@ -11,9 +11,17 @@ export interface Vehicle {
 
 export interface VehicleSpec {
     vehicle_type: string;
+    manufacturer: string;
     model: string;
-    fuel_type: string | null;
+    year: number;
+    fuel_type: string;
+    engine_capacity: string;
+    transmission: string;
     seating_capacity: number;
+    color: string;
+    features: string;
+    rental_rate: number;
+    availability: boolean;
 }
 
 export interface TVehicleDetails {
@@ -54,12 +62,27 @@ export const vehiclesApi = createApi({
             }),
             invalidatesTags: ['Vehicle'],
         }),
+        updateVehicle: builder.mutation<Vehicle, { vehicle_id: number; vehicle: Partial<Vehicle> }>({
+            query: ({ vehicle_id, vehicle }) => ({
+                url: `/vehicles/details/${vehicle_id}`,
+                method: 'PUT',
+                body: vehicle,
+            }),
+        }),
+        deleteVehicle: builder.mutation<void, number>({
+            query: (id) => ({
+                url: `vehicles/delete/${id}`,
+                method: 'DELETE',
+            }),
+        }),
     }),
-});
+}); 
 
-export const { useFetchVehiclesQuery, useFetchVehicleDetailsQuery, useAddVehicleMutation } = vehiclesApi as {
+export const { useFetchVehiclesQuery, useFetchVehicleDetailsQuery, useAddVehicleMutation, useUpdateVehicleMutation, useDeleteVehicleMutation } = vehiclesApi as {
     useFetchVehiclesQuery: () => ReturnType<typeof vehiclesApi.endpoints.fetchVehicles.useQuery>;
     useAddVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.addVehicle.useMutation>
     useFetchVehicleDetailsQuery: (options?: {pollingInterval?: number; skipPollingIfUnfocused?: boolean;}) => ReturnType<typeof vehiclesApi.endpoints.fetchVehicleDetails.useQuery>
+    useUpdateVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.updateVehicle.useMutation>
+    useDeleteVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.deleteVehicle.useMutation>
 
 };

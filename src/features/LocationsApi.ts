@@ -28,7 +28,7 @@ export const locationApi = createApi({
         }),
         addLocation: builder.mutation<Location, Partial<Location>>({
             query: (newLocation) => ({
-                url: '/add/locations',
+                url: '/locations',
                 method: 'POST',
                 body: newLocation,
             }),
@@ -37,7 +37,7 @@ export const locationApi = createApi({
     }),
 });
 
-export const { useFetchLocationsQuery } = locationApi as {
+export const { useFetchLocationsQuery, useAddLocationMutation } = locationApi as {
     useFetchLocationsQuery: (options?: { pollingInterval?: number; skipPollingIfUnfocused?: boolean; }) => ReturnType<typeof locationApi.endpoints.fetchLocations.useQuery>
-
-};
+    useAddLocationMutation: () => ReturnType<typeof locationApi.endpoints.addLocation.useMutation>
+};  
