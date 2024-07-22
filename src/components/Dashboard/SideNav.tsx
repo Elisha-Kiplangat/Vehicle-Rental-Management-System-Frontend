@@ -1,5 +1,4 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useLogoutMutation } from "../../features/auth/AuthSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCar, faUser, faClipboardList, faEnvelope, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
 
@@ -10,11 +9,9 @@ interface SideNavProps {
 const SideNav = ({onClose}: SideNavProps) => {
 
   const navigate = useNavigate();
-  const [logout] = useLogoutMutation();
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap();
       navigate('/');
     } catch (error) {
       console.error('Failed to logout:', error);
