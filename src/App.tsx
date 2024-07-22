@@ -49,6 +49,7 @@ const App = () => {
           <Route path="fleets" element={<FleetManagement />} />
           <Route path="locations" element={<Locations />} />
           <Route path="branches" element={<Branches />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
