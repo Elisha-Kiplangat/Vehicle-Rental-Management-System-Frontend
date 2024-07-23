@@ -33,8 +33,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
-        <Route path="success" element={<SuccessPage />} />
-        <Route path="cancelled" element={<CancelPage />} />
+        <Route path="/success" element={<SuccessPage />} />
+        <Route path="/cancelled" element={<CancelPage />} />
         <Route path="/dashboard/user" element={<PrivateRoute><UserDashboard /></PrivateRoute>}>
           <Route path="" element={<Navigate to="vehicles" replace />} />
           <Route path="vehicles" element={<Vehicles />} />
