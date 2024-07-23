@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import SignInUp from '../pages/SignInUp'; 
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.jpg'
 
 const Nav = () => {
   const [showSignInUp, setShowSignInUp] = useState(false);
@@ -21,10 +22,10 @@ const Nav = () => {
 
   return (
     <>
-      <div className="navbar bg-blue-100 relative z-10 p-4 lg:px-10">
+      <div className="navbar bg-blue-100 relative z-10 p-4 lg:px-10 font-serif">
       <div className="navbar-start">
-        <div tabIndex={0} role="button" className="btn btn-ghost">
-          SpeedyCar
+        <div tabIndex={0} role="button" className="btn btn-ghost p-0">
+          <img src={logo} alt="" className='w-10 h-12' />
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">

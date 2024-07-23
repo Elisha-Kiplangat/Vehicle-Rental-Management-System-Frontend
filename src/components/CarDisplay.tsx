@@ -1,4 +1,7 @@
-import Audi from '../assets/Audi.jpeg'
+import porsche from '../assets/porsche.jpg'
+import bike1 from '../assets/bike2.jpg'
+import  canter from '../assets/canter.jpg'
+import pickup from '../assets/pickup.jpg'
 
 interface Car {
   model: string;
@@ -12,25 +15,25 @@ const cars: Car[] = [
     model: "Car Model 1",
     description: "Description of Car Model 1",
     price: 25000,
-    image: `${Audi}`
+    image: `${porsche}`
   },
   {
     model: "Car Model 2",
     description: "Description of Car Model 2",
-    price: 30000,
-    image: `${Audi}`
+    price: 40000,
+    image: `${bike1}`
   },
   {
     model: "Car Model 3",
     description: "Description of Car Model 3",
     price: 35000,
-    image: `${Audi}`
+    image: `${pickup}`
   },
   {
     model: "Car Model 4",
     description: "Description of Car Model 4",
     price: 40000,
-    image: `${Audi}`
+    image: `${canter}`
   }
 ];
 
