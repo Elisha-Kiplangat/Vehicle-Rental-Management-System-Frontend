@@ -54,6 +54,10 @@ export const vehiclesApi = createApi({
             query: () => '/vehicleDetails',
             providesTags: ['Vehicle'],
         }),
+        fetchVehicleSpecs: builder.query<VehicleSpec[], void>({
+            query: () => '/vehicleSpecifications',
+            providesTags: ['Vehicle'],
+        }),
         addVehicle: builder.mutation<Vehicle, Partial<Vehicle>>({
             query: (newVehicle) => ({
                 url: '/add/vehicles',
@@ -62,27 +66,28 @@ export const vehiclesApi = createApi({
             }),
             invalidatesTags: ['Vehicle'],
         }),
-        updateVehicle: builder.mutation<Vehicle, { vehicle_id: number; vehicle: Partial<Vehicle> }>({
+        updateVehicle: builder.mutation<TVehicleDetails, { vehicle_id: number; vehicle: Partial<Vehicle> }>({
             query: ({ vehicle_id, vehicle }) => ({
-                url: `/vehicles/details/${vehicle_id}`,
+                url: `/vehicles/${vehicle_id}`,
                 method: 'PUT',
                 body: vehicle,
             }),
         }),
         deleteVehicle: builder.mutation<void, number>({
             query: (id) => ({
-                url: `vehicles/delete/${id}`,
+                url: `vehicle/delete/${id}`,
                 method: 'DELETE',
             }),
         }),
     }),
 }); 
 
-export const { useFetchVehiclesQuery, useFetchVehicleDetailsQuery, useAddVehicleMutation, useUpdateVehicleMutation, useDeleteVehicleMutation } = vehiclesApi as {
+export const { useFetchVehiclesQuery,useFetchVehicleSpecsQuery, useFetchVehicleDetailsQuery, useAddVehicleMutation, useUpdateVehicleMutation, useDeleteVehicleMutation } = vehiclesApi as {
     useFetchVehiclesQuery: () => ReturnType<typeof vehiclesApi.endpoints.fetchVehicles.useQuery>;
     useAddVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.addVehicle.useMutation>
     useFetchVehicleDetailsQuery: (options?: {pollingInterval?: number; skipPollingIfUnfocused?: boolean;}) => ReturnType<typeof vehiclesApi.endpoints.fetchVehicleDetails.useQuery>
     useUpdateVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.updateVehicle.useMutation>
     useDeleteVehicleMutation: () => ReturnType<typeof vehiclesApi.endpoints.deleteVehicle.useMutation>
-
+    useFetchVehicleSpecsQuery: () => ReturnType<typeof vehiclesApi.endpoints.fetchVehicleSpecs.useQuery>;
+    
 };
