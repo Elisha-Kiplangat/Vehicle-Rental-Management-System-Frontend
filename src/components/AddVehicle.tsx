@@ -174,8 +174,8 @@ const AddVehicle = ({ vehicleToEdit, onClose }: AddVehicleProps) => {
               required
             >
               <option value="" disabled>Select</option>
-              <option value="car">Car</option>
-              <option value="bike">Bike</option>
+              <option value="Car">Car</option>
+              <option value="Bike">Bike</option>
             </select>
           </div>
 
