@@ -1,11 +1,43 @@
 import { useState } from 'react';
 import { Container } from '@mui/material';
-import image from '../../assets/Audi.jpeg';
 import CarFilter from './CarFilter';
 import VehicleDetails from './VehicleDetails'; 
 import Checkout from './Checkout';
 import { useFetchVehicleDetailsQuery, TVehicleDetails } from '../../features/VehiclesAPI';
 import { useOutletContext } from 'react-router-dom';
+import Audi from '../../assets/Audi.jpeg'
+import Mazda from '../../assets/Mazda.jpg'
+import Benz from '../../assets/Benz.jpg'
+import bike1 from '../../assets/bike1.jpg'
+import bike2 from '../../assets/bike1.jpg'
+import bike3 from '../../assets/bike3.jpg'
+import Cybertruck from '../../assets/Cybertruck.jpg'
+import isuzu from '../../assets/isuzu.jpg'
+import IsuzuPickup from '../../assets/isuzu-pickup.jpg'
+import pickup from '../../assets/pickup.jpg'
+import Canter from '../../assets/canter.jpg'
+import forrdPickup from '../../assets/forrd-pickup.jpg'
+import Porsche from '../../assets/porsche.jpg'
+import Fielder from '../../assets/Fielder.jpg'
+
+const vehicleImages: { [key: string]: string } = {
+  'Audi': `${Audi}`,
+  'Honda': `${bike1}`,
+  'Tvs': `${bike2}`,
+  'Yamaha': `${bike3}`,
+  'Mercedes': `${Benz}`,
+  'Cybertruck': `${Cybertruck}`,
+  'Honda c3': `${bike2}`,
+  'Mazda': `${Mazda}`,
+  'Isuzu': `${isuzu}`,
+  'Isuzu-pickup': `${IsuzuPickup}`,
+  'Toyota-pickup': `${pickup}`,
+  'Canter': `${Canter}`,
+  'Ford': `${forrdPickup}`,
+  'Fielder': `${Fielder}`,
+  'Porsche': `${Porsche}`,
+  
+};
 
 const Vehicles = () => {
   const [filter, setFilter] = useState({ vehicleType: 'All', seatingCapacity: 'All' });
@@ -68,7 +100,7 @@ const Vehicles = () => {
                 key={vehicle.vehicle_id}
                 className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white border border-gray-200 p-4"
               >
-                <img src={ `${image}`} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
+                <img src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
                 <div className="p-4">
                   <h3 className="text-lg font-semibold mb-2">{vehicle.vehicle_spec.model}</h3>
                   <p className="text-gray-700 mb-1">{vehicle.vehicle_spec.fuel_type || 'Unknown'}</p>

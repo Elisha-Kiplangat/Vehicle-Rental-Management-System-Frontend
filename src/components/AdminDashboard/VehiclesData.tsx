@@ -2,8 +2,40 @@ import { useState } from 'react';
 import { Container, Typography, Button } from '@mui/material';
 import { useFetchVehicleDetailsQuery, useDeleteVehicleMutation, TVehicleDetails } from '../../features/VehiclesAPI';
 import AddVehicle from '../AddVehicle';
-import image from '../../assets/Audi.jpeg';
 import { useOutletContext } from 'react-router-dom';
+import Audi from '../../assets/Audi.jpeg'
+import Mazda from '../../assets/Mazda.jpg'
+import Benz from '../../assets/Benz.jpg'
+import bike1 from '../../assets/bike1.jpg'
+import bike2 from '../../assets/bike1.jpg'
+import bike3 from '../../assets/bike3.jpg'
+import Cybertruck from '../../assets/Cybertruck.jpg'
+import isuzu from '../../assets/isuzu.jpg'
+import IsuzuPickup from '../../assets/isuzu-pickup.jpg'
+import pickup from '../../assets/pickup.jpg'
+import Canter from '../../assets/canter.jpg'
+import forrdPickup from '../../assets/forrd-pickup.jpg'
+import Porsche from '../../assets/porsche.jpg'
+import Fielder from '../../assets/Fielder.jpg'
+
+const vehicleImages: { [key: string]: string } = {
+  'Audi': `${Audi}`,
+  'Honda': `${bike1}`,
+  'Tvs': `${bike2}`,
+  'Yamaha': `${bike3}`,
+  'Mercedes': `${Benz}`,
+  'Cybertruck': `${Cybertruck}`,
+  'Honda c3': `${bike2}`,
+  'Mazda': `${Mazda}`,
+  'Isuzu': `${isuzu}`,
+  'Isuzu-pickup': `${IsuzuPickup}`,
+  'Toyota-pickup': `${pickup}`,
+  'Canter': `${Canter}`,
+  'Ford': `${forrdPickup}`,
+  'Fielder': `${Fielder}`,
+  'Porsche': `${Porsche}`,
+  
+};
 
 const VehiclesData = () => {
   const [showForm, setShowForm] = useState(false);
@@ -15,7 +47,7 @@ const VehiclesData = () => {
 
   const handleButtonClick = () => {
     setShowForm((prevShowForm) => !prevShowForm);
-    setSelectedVehicle(null); // Clear selection when adding a new vehicle
+    setSelectedVehicle(null); 
   };
 
   const handleEdit = (vehicle: TVehicleDetails) => {
@@ -68,11 +100,11 @@ const VehiclesData = () => {
             key={vehicle.vehicle_id}
             className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white border border-gray-200 p-4"
           >
-            <img src={image} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
+            <img src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
             <div className="p-4">
               <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.model}</h2>
               <p className="text-gray-700 mb-1">Vehicle ID: {vehicle.vehicle_id}</p>
-              <p className="text-gray-700 mb-1">Rental Rate: ${vehicle.rental_rate}</p>
+              <p className="text-gray-700 mb-1">Rental Rate: {vehicle.rental_rate}</p>
               <p className="text-gray-700 mb-1">Fuel Type: {vehicle.vehicle_spec.fuel_type}</p>
               <p className="text-gray-700 mb-1">Seating Capacity: {vehicle.vehicle_spec.seating_capacity}</p>
               <p className="text-gray-700 mb-4">Availability: {vehicle.availability ? 'Yes' : 'No'}</p>
