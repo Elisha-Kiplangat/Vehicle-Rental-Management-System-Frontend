@@ -22,6 +22,8 @@ import ErrorPage from "./pages/ErrorPage";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import PrivateRoute from "./features/auth/PrivateRoute";
+import SuccessPage from "./pages/SuccessPage";
+import CancelPage from "./pages/CancelPage";
 
 const App = () => {
   return (
@@ -31,6 +33,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="success" element={<PrivateRoute><SuccessPage /></PrivateRoute>} />
+        <Route path="cancelled" element={<PrivateRoute><CancelPage /></PrivateRoute>} />
         <Route path="/dashboard/user" element={<PrivateRoute><UserDashboard /></PrivateRoute>}>
           <Route path="" element={<Navigate to="vehicles" replace />} />
           <Route path="vehicles" element={<Vehicles />} />
