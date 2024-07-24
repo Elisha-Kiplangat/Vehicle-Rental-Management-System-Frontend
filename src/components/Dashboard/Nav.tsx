@@ -1,15 +1,14 @@
 
 import { useGetUserQuery } from '../../features/auth/AuthSlice';
-import Profile from '../../assets/Profile.jpg'
 
 interface NavProps {
   toggleSideNav: () => void;
   onSearchChange: (query: string) => void;
   unreadMessagesCount: number;
-  Profile: string;
+  profilePicture: string;
 }
 
-const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, Profile }: NavProps) => {
+const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePicture }: NavProps) => {
   const userId = localStorage.getItem('user_id');
   const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
 
@@ -90,7 +89,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, Profile }: Na
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img alt="Profile" src={Profile} />
+                  <img alt="Profile" src={profilePicture} />
                 </div>
               </div>
               <ul className="menu menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 shadow space-y-2 right-0">
