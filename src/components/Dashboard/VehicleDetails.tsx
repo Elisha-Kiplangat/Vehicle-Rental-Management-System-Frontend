@@ -13,6 +13,13 @@ import Canter from '../../assets/canter.jpg'
 import forrdPickup from '../../assets/forrd-pickup.jpg'
 import Porsche from '../../assets/porsche.jpg'
 import Fielder from '../../assets/Fielder.jpg'
+import Vitz from '../../assets/Vitz.jpg'
+import Purosangue from '../../assets/Purosangue.jpg'
+import TX from '../../assets/TX.jpg'
+import V8 from '../../assets/V8.jpg'
+import Skyline from '../../assets/Skyline.jpg'
+import Impreza from '../../assets/Impreza.jpg'
+import CX5 from '../../assets/CX5.jpg'
 
 const vehicleImages: { [key: string]: string } = {
   'Audi': `${Audi}`,
@@ -30,6 +37,15 @@ const vehicleImages: { [key: string]: string } = {
   'Ford': `${forrdPickup}`,
   'Fielder': `${Fielder}`,
   'Porsche': `${Porsche}`,
+  'Vitz': `${Vitz}`,
+  'Purosangue': `${Purosangue}`,
+  'TX': `${TX}`,
+  'V8': `${V8}`,
+  'Skyline': `${Skyline}`,
+  'Impreza': `${Impreza}`,
+  'CX5': `${CX5}`,
+
+
   
 };
 
