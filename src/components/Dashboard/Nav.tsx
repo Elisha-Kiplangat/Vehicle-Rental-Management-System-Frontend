@@ -1,5 +1,6 @@
 
 import { useGetUserQuery } from '../../features/auth/AuthSlice';
+import Profile from '../../assets/Profile.jpg'
 
 interface NavProps {
   toggleSideNav: () => void;
@@ -89,7 +90,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img alt="Profile" src={profilePicture} />
+                  <img alt="Profile" src={Profile} />
                 </div>
               </div>
               <ul className="menu menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 shadow space-y-2 right-0">
@@ -100,7 +101,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
                 ) : (
                   <>
                     <li><a>{user?.email || 'No email'}</a></li>
-                    <li><a>Logout</a></li>
+                    {/* <li><a>Logout</a></li> */}
                   </>
                 )}
               </ul>
