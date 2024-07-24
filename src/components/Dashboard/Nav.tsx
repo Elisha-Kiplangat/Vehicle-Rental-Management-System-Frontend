@@ -6,10 +6,10 @@ interface NavProps {
   toggleSideNav: () => void;
   onSearchChange: (query: string) => void;
   unreadMessagesCount: number;
-  profilePicture: string;
+  Profile: string;
 }
 
-const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePicture }: NavProps) => {
+const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, Profile }: NavProps) => {
   const userId = localStorage.getItem('user_id');
   const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
 
