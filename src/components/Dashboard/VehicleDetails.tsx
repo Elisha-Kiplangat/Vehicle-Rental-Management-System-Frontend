@@ -1,5 +1,37 @@
-import image from '../../assets/Audi.jpeg'
 
+import Audi from '../../assets/Audi.jpeg'
+import Mazda from '../../assets/Mazda.jpg'
+import Benz from '../../assets/Benz.jpg'
+import bike1 from '../../assets/bike1.jpg'
+import bike2 from '../../assets/bike1.jpg'
+import bike3 from '../../assets/bike3.jpg'
+import Cybertruck from '../../assets/Cybertruck.jpg'
+import isuzu from '../../assets/isuzu.jpg'
+import IsuzuPickup from '../../assets/isuzu-pickup.jpg'
+import pickup from '../../assets/pickup.jpg'
+import Canter from '../../assets/canter.jpg'
+import forrdPickup from '../../assets/forrd-pickup.jpg'
+import Porsche from '../../assets/porsche.jpg'
+import Fielder from '../../assets/Fielder.jpg'
+
+const vehicleImages: { [key: string]: string } = {
+  'Audi': `${Audi}`,
+  'Honda': `${bike1}`,
+  'Tvs': `${bike2}`,
+  'Yamaha': `${bike3}`,
+  'Mercedes': `${Benz}`,
+  'Cybertruck': `${Cybertruck}`,
+  'Honda c3': `${bike2}`,
+  'Mazda': `${Mazda}`,
+  'Isuzu': `${isuzu}`,
+  'Isuzu-pickup': `${IsuzuPickup}`,
+  'Toyota-pickup': `${pickup}`,
+  'Canter': `${Canter}`,
+  'Ford': `${forrdPickup}`,
+  'Fielder': `${Fielder}`,
+  'Porsche': `${Porsche}`,
+  
+};
 
 interface VehicleDetailsProps {
   vehicle: {
@@ -23,11 +55,13 @@ const VehicleDetails = ({ vehicle, onRent, onBack }: VehicleDetailsProps) => {
     <div className="max-w-4xl mx-auto mt-10 bg-white rounded-lg overflow-hidden shadow-lg">
       <div className="flex flex-wrap lg:flex-nowrap">
         <div className="w-full lg:w-1/2 p-4">
-          <img
+          <img src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} alt={vehicle.vehicle_spec.model} className="w-full h-auto rounded-lg shadow-md" />
+                
+          {/* <img
             src={image}
             alt={vehicle.vehicle_spec.model}
             className="w-full h-auto rounded-lg shadow-md"
-          />
+          /> */}
         </div>
         <div className="w-full lg:w-1/2 p-4 flex flex-col justify-between">
           <div>
