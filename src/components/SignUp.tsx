@@ -26,7 +26,7 @@ export const SignUp = () => {
         <input className="bg-gray-200 border-none my-2 py-2 px-4 text-sm rounded-lg w-full outline-none" type="text" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button className="bg-purple-700 text-white text-xs py-2 px-10 border border-transparent rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer" type="submit" disabled={isLoading}>Sign Up</button>
         {isError && <p className="error text-red-500 mt-2">Failed to sign up</p>}
-        {isSuccess && <p className="success text-green-500 mt-2">Signed up successfully</p>}
+        {isSuccess && <p className="success text-green-500 mt-2">Signed up successfully.<b>LOGIN TO YOUR ACCOUNT</b></p>}
       </form>
     </div>
   );

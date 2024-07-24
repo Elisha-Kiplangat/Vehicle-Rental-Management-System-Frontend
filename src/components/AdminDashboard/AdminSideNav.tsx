@@ -2,8 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 // import { store } from "../../app/Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faTimes, faSignOutAlt, faUsers, faCar, faClipboardList, faEnvelope, faChartBar, faBuilding, faMapMarkerAlt, faCog } from '@fortawesome/free-solid-svg-icons';
-import { logout } from '../../features/auth/AuthContext';
-import { useDispatch } from "react-redux";
+// import { logout } from '../../features/auth/AuthContext';
+// import { useDispatch } from "react-redux";
 
 interface SideNavProps {
   onClose: () => void;
@@ -12,10 +12,10 @@ interface SideNavProps {
 const AdminSideNav = ({ onClose }: SideNavProps) => {
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
 
   const handleLogOut = () => {
-    dispatch(logout());
+    // dispatch(logout());
     navigate('/');
   };
 
