@@ -35,14 +35,14 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancelled" element={<CancelPage />} />
-        <Route path="/dashboard/user" element={<PrivateRoute><UserDashboard /></PrivateRoute>}>
+        <Route path="/dashboard/user" element={<PrivateRoute requiredRole="user"><UserDashboard /></PrivateRoute>}>
           <Route path="" element={<Navigate to="vehicles" replace />} />
           <Route path="vehicles" element={<Vehicles />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
         </Route>
-        <Route path="/dashboard/admin" element={<PrivateRoute><AdminDashboard /></PrivateRoute>}>
+        <Route path="/dashboard/admin" element={<PrivateRoute requiredRole="admin"><AdminDashboard /></PrivateRoute>}>
           <Route path="" element={<Navigate to="home" replace />} />
           <Route path="home" element={<AdminHome />} />
           <Route path="vehicles" element={<VehiclesData />} />
