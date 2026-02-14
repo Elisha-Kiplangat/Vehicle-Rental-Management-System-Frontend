@@ -42,8 +42,8 @@ const SignInUp = ({ onClose }: SignInUpProps) => {
     <div className="fixed top-0 left-0 w-full h-full bg-gray-800 bg-opacity-50 flex justify-center items-center z-50">
       <div className="container bg-white rounded-lg shadow-lg relative overflow-hidden w-full md:w-3/4 lg:w-1/2 max-w-2xl min-h-[450px] flex items-center" id="container">
         <div className="w-1/2 h-full flex flex-col justify-center items-center">
-          {activeForm === 'signin' && <SignIn />}
-          {activeForm === 'signup' && <SignUp />}
+          {activeForm === 'signin' && <SignIn onLoginSuccess={onClose} />}
+          {activeForm === 'signup' && <SignUp onSignUpSuccess={handleSignIn} />}
         </div>
 
         <div className="toggle-container bg-blue-100 w-1/2 min-h-[450px] rounded-l-2xl flex flex-col items-center justify-center pt-12">

@@ -4,7 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { setUser } from '../features/user/UserSlice';
 import { useDispatch } from 'react-redux';
 
-export const SignIn = () => {
+interface SignInProps {
+  onLoginSuccess?: () => void;
+}
+
+export const SignIn = ({ onLoginSuccess }: SignInProps) => {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,11 +24,17 @@ export const SignIn = () => {
       localStorage.setItem('user_id', data.user_id.toString());
       localStorage.setItem('role', data.role);
 
-      if (data.role === 'user') {
-        navigate('/dashboard/user');
-      } else {
-        navigate('/dashboard/admin');
+      if (onLoginSuccess) {
+        onLoginSuccess();
       }
+
+      setTimeout(() => {
+        if (data.role === 'user') {
+          navigate('/dashboard/user');
+        } else {
+          navigate('/dashboard/admin');
+        }
+      }, 100);
     } catch (error) {
       console.error('Login error:', error);
     }

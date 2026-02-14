@@ -1,8 +1,12 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRegisterUserMutation } from '../features/auth/AuthSlice';
 
-export const SignUp = () => {
+interface SignUpProps {
+  onSignUpSuccess?: () => void;
+}
+
+export const SignUp = ({ onSignUpSuccess }: SignUpProps) => {
   const [full_name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [contact_phone, setPhone] = useState('');
@@ -15,6 +19,14 @@ export const SignUp = () => {
     await registerUser({ full_name, email, contact_phone, address, password });
   };
 
+  useEffect(() => {
+    if (isSuccess && onSignUpSuccess) {
+      setTimeout(() => {
+        onSignUpSuccess();
+      }, 1500);
+    }
+  }, [isSuccess, onSignUpSuccess]);
+
   return (
     <div className="form-container sign-up absolute top-0 h-full transition-all ease-in-out duration-600 left-0 w-1/2 z-0">
       <form className="bg-white flex flex-col items-center justify-center py-0 px-10 h-full" onSubmit={handleSubmit}>
@@ -26,7 +38,7 @@ export const SignUp = () => {
         <input className="bg-gray-200 border-none my-2 py-2 px-4 text-sm rounded-lg w-full outline-none" type="text" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <button className="bg-purple-700 text-white text-xs py-2 px-10 border border-transparent rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer" type="submit" disabled={isLoading}>Sign Up</button>
         {isError && <p className="error text-red-500 mt-2">Failed to sign up</p>}
-        {isSuccess && <p className="success text-green-500 mt-2">Signed up successfully.<b>LOGIN TO YOUR ACCOUNT</b></p>}
+        {isSuccess && <p className="success text-green-500 mt-2"><b>LOGIN</b></p>}
       </form>
     </div>
   );
