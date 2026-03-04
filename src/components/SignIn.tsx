@@ -58,7 +58,7 @@ export const SignIn = ({ onLoginSuccess }: SignInProps) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a className="text-sm no-underline my-4" href="#">Forget Your Password?</a>
+        <a className="text-sm no-underline my-4" href="#">Forgot Password?</a>
         <button
           className="bg-purple-700 text-white text-xs py-2 px-10 border border-transparent rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer"
           type="submit"

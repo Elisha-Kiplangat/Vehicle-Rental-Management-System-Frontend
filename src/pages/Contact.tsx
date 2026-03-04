@@ -62,16 +62,16 @@ const Contact = () => {
             <div className="space-y-4">
               <div>
                 <p className="text-lg font-medium text-gray-700">Address:</p>
-                <p className="text-gray-600">123 Main Street, Cityville, State, Country</p>
+                <p className="text-gray-600">Nairobi, Kenya</p>
               </div>
               <div>
                 <p className="text-lg font-medium text-gray-700">Phone:</p>
-                <p className="text-gray-600">+1 (123) 456-7890</p>
+                <p className="text-gray-600">+254 700 123 762</p>
               </div>
               <div>
                 <p className="text-lg font-medium text-gray-700">Email:</p>
                 <p className="text-gray-600">
-                  <a href="mailto:info@example.com" className="text-blue-500">info@example.com</a>
+                  <a href="mailto:info@rentvy.com" className="text-blue-500">info@rentvy.com</a>
                 </p>
               </div>
             </div>

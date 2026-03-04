@@ -29,14 +29,14 @@ const Nav = () => {
         </div>
       </div>
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1">
+        <ul className="menu menu-horizontal px-1 font-bold text-lg">
           <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About Us</Link></li>
             <li><Link to="/contact">Contact Us</Link></li>
         </ul>
       </div>
       <div className="navbar-end hidden lg:flex">
-        <a className="btn" onClick={handleAccountClick}>Account</a>
+        <a className="btn" onClick={handleAccountClick}>Sign IN/UP</a>
       </div>
       <div className="lg:hidden flex items-center navbar-end">
         <button className="btn btn-ghost" onClick={toggleMenu}>
