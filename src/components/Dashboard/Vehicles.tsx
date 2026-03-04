@@ -96,7 +96,7 @@ const Vehicles = () => {
 
   return (
     <>
-      <CarFilter onFilterChange={handleFilterChange} />
+      {!selectedVehicle && <CarFilter onFilterChange={handleFilterChange} />}
       <Container>
         {selectedVehicle && isCheckingOut ? (
           <Checkout vehicle={selectedVehicle} onBack={handleBackToList} />
@@ -107,22 +107,52 @@ const Vehicles = () => {
             onBack={handleBackToList}
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-10 pb-8">
             {filteredVehicles?.map((vehicle: TVehicleDetails) => (
               <div
                 key={vehicle.vehicle_id}
-                className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white border border-gray-200 p-4"
+                className="group relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl bg-white border border-gray-100 transition-all duration-300 hover:-translate-y-2 cursor-pointer"
               >
-                <img src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
-                <div className="p-4">
-                  <h3 className="text-lg font-semibold mb-2">{vehicle.vehicle_spec.model}</h3>
-                  <p className="text-gray-700 mb-1">{vehicle.vehicle_spec.fuel_type || 'Unknown'}</p>
-                  <p className="text-gray-700 mb-4">Seats: {vehicle.vehicle_spec.seating_capacity}</p>
+                <div className="relative overflow-hidden">
+                  <img 
+                    src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} 
+                    alt={vehicle.vehicle_spec.model} 
+                    className="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-110" 
+                  />
+                  
+                   <div className={`absolute top-3 right-3 px-3 py-1 rounded-full font-semibold text-xs shadow-md ${
+              vehicle.availability 
+                ? 'bg-green-500 text-white' 
+                : 'bg-red-500 text-white'
+            }`}>
+              {vehicle.availability ? '✓ Available' : '✗ Not Available'}
+            </div>
+                </div>
+                
+                <div className="p-5">
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">{vehicle.vehicle_spec.model}</h3>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center text-gray-600">
+                      <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                      </svg>
+                      <span className="text-sm font-medium">{vehicle.vehicle_spec.fuel_type || 'Unknown'}</span>
+                    </div>
+                    
+                    <div className="flex items-center text-gray-600">
+                      <svg className="w-5 h-5 mr-2 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                      <span className="text-sm font-medium">{vehicle.vehicle_spec.seating_capacity} Seats</span>
+                    </div>
+                  </div>
+                  
                   <button
-                    className="w-full bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                     onClick={() => handleViewDetails(vehicle)}
                   >
-                    View Car Details
+                    View Details
                   </button>
                 </div>
               </div>
