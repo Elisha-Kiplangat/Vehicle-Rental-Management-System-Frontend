@@ -12,26 +12,26 @@ interface Car {
 
 const cars: Car[] = [
   {
-    model: "Car Model 1",
-    description: "Description of Car Model 1",
+    model: "Porsche Cayenne",
+    description: "The Porsche Cayenne is a luxury mid-size SUV that combines performance, style, and versatility. It features a powerful engine lineup, advanced technology, and a comfortable interior, making it an ideal choice for those seeking a high-performance SUV with a touch of elegance.",
     price: 25000,
     image: `${porsche}`
   },
   {
-    model: "Car Model 2",
-    description: "Description of Car Model 2",
+    model: "Electric Bike",
+    description: "The electric bike is a modern, eco-friendly transportation option that combines the convenience of cycling with the power of electric motors. It offers an efficient and sustainable way to travel short to medium distances.",
     price: 40000,
     image: `${bike1}`
   },
   {
-    model: "Car Model 3",
-    description: "Description of Car Model 3",
+    model: "Pickup Truck",
+    description: "The Pickup Truck is a rugged and versatile vehicle designed for both work and leisure. It offers a spacious cargo bed, powerful towing capabilities, and a comfortable interior, making it an ideal choice for those who need a reliable vehicle for hauling goods or embarking on outdoor adventures.",
     price: 35000,
     image: `${pickup}`
   },
   {
-    model: "Car Model 4",
-    description: "Description of Car Model 4",
+    model: "Lorry",
+    description: "The Lorry is a versatile and robust vehicle designed for transporting goods and materials. It offers excellent cargo capacity, durability, and reliability for both urban and rural transportation needs.",
     price: 40000,
     image: `${canter}`
   }
@@ -48,7 +48,7 @@ const CarDisplay = () => {
               <div className="p-4">
                 <h2 className="text-xl font-bold mb-2">{car.model}</h2>
                 <p className="text-gray-700">{car.description}</p>
-                <p className="text-gray-500 mt-2">Price: ${car.price}</p>
+                <p className="text-gray-500 mt-2">Price: Ksh.{car.price}</p>
               </div>
             </div>
           ))}
