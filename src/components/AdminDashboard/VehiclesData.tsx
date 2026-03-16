@@ -94,43 +94,75 @@ const VehiclesData = () => {
   
   if (error) return <div>Error loading vehicles</div>;
 
-  const filteredVehicles = vehicles.filter((vehicle: TVehicleDetails) =>
+  const filteredVehicles = (vehicles ?? []).filter((vehicle: TVehicleDetails) =>
     vehicle.vehicle_spec.model.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <Container>
-      <Typography variant="h4" gutterBottom>
-        Vehicles
-      </Typography>
-      <Button variant="contained" color="primary" onClick={handleButtonClick}>
-        {showForm ? 'Close Form' : 'Add Vehicle'}
-      </Button>
+    <Container className="py-6">
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+        <Typography variant="h4" gutterBottom className="!mb-0">
+          Vehicles
+        </Typography>
+        <div className="flex items-center gap-3">
+          <p className="text-sm text-gray-500">Showing {filteredVehicles.length} vehicle(s)</p>
+          <Button variant="contained" color="primary" onClick={handleButtonClick}>
+            {showForm ? 'Close Form' : 'Add Vehicle'}
+          </Button>
+        </div>
+      </div>
+
       {showForm && <AddVehicle vehicleToEdit={selectedVehicle} onClose={handleCloseForm} />}
       
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {filteredVehicles.map((vehicle: TVehicleDetails) => (
           <div
             key={vehicle.vehicle_id}
-            className="max-w-sm rounded-lg overflow-hidden shadow-md bg-white border border-gray-200 p-4"
+            className="rounded-2xl overflow-hidden shadow-2xl bg-white border border-gray-100 transition-all duration-300 hover:-translate-y-1"
           >
-            <img src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`} alt={vehicle.vehicle_spec.model} className="w-full h-48 object-cover" />
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-4">{vehicle.vehicle_spec.model}</h2>
-              <p className="text-gray-700 mb-1">Vehicle ID: {vehicle.vehicle_id}</p>
-              <p className="text-gray-700 mb-1">Rental Rate: {vehicle.rental_rate}</p>
-              <p className="text-gray-700 mb-1">Fuel Type: {vehicle.vehicle_spec.fuel_type}</p>
-              <p className="text-gray-700 mb-1">Seating Capacity: {vehicle.vehicle_spec.seating_capacity}</p>
-              <p className="text-gray-700 mb-4">Availability: {vehicle.availability ? 'Yes' : 'No'}</p>
-              <div className="flex flex-row">
+            <div className="relative group bg-gradient-to-br from-gray-50 to-gray-100 p-4">
+              <img
+                src={vehicleImages[vehicle.vehicle_spec.model] || `${Audi}`}
+                alt={vehicle.vehicle_spec.model}
+                className="w-full h-56 rounded-xl object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div
+                className={`absolute top-7 right-7 px-3 py-1 rounded-full text-xs font-semibold shadow-lg ${
+                  vehicle.availability ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                }`}
+              >
+                {vehicle.availability ? 'Available' : 'Unavailable'}
+              </div>
+            </div>
+
+            <div className="p-5">
+              <div className="mb-4">
+                <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-semibold mb-3">
+                  {vehicle.vehicle_spec.vehicle_type}
+                </span>
+                <h2 className="text-2xl font-bold text-gray-800">{vehicle.vehicle_spec.model}</h2>
+              </div>
+
+              <div className="space-y-2 mb-5 text-sm text-gray-700">
+                <p><span className="font-semibold text-gray-900">Vehicle ID:</span> {vehicle.vehicle_id}</p>
+                <p><span className="font-semibold text-gray-900">Fuel Type:</span> {vehicle.vehicle_spec.fuel_type || 'Unknown'}</p>
+                <p><span className="font-semibold text-gray-900">Seating:</span> {vehicle.vehicle_spec.seating_capacity} passengers</p>
+              </div>
+
+              <div className="mb-5 p-3 bg-gradient-to-r from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200">
+                <p className="text-xs text-blue-700 font-medium">Rental Rate</p>
+                <p className="text-2xl text-blue-900 font-bold">{vehicle.rental_rate}<span className="text-sm font-normal text-gray-600">/day</span></p>
+              </div>
+
+              <div className="flex gap-3">
                 <button 
-                  className="w-1/2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-0 px-4 mr-5 rounded"
+                  className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                   onClick={() => handleEdit(vehicle)}
                 >
                   Edit
                 </button>
                 <button 
-                  className="w-1/2 bg-red-400 hover:bg-red-500 text-white font-bold py-0 px-4 ml-5 rounded"
+                  className="flex-1 bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                   onClick={() => handleDelete(vehicle.vehicle_id)}
                 >
                   Delete
@@ -139,6 +171,12 @@ const VehiclesData = () => {
             </div>
           </div>
         ))}
+
+        {filteredVehicles.length === 0 && (
+          <div className="col-span-full rounded-2xl border border-dashed border-gray-300 py-14 text-center text-gray-500 bg-white">
+            No vehicles match your search.
+          </div>
+        )}
       </div>
     </Container>
   );
