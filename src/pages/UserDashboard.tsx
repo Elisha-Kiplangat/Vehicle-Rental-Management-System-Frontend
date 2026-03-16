@@ -3,9 +3,10 @@ import { Outlet } from "react-router-dom"
 import Nav from "../components/Dashboard/Nav"
 import SideNav from "../components/Dashboard/SideNav"
 import { useState, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { RootState } from "../app/Store";
-// import { useGetUserQuery } from "../features/auth/AuthSlice";
+import { useGetUserQuery } from "../features/auth/AuthSlice";
+
+// Default avatar
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=128';
 
 
 const UserDashboard = () => {
@@ -14,8 +15,17 @@ const UserDashboard = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [unreadMessagesCount] = useState(0); 
-  const [profilePicture] = useState('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg');
   const [loading, setLoading] = useState(true); 
+  
+  // Get user data
+  const userId = localStorage.getItem('user_id');
+  const { data: user } = useGetUserQuery(Number(userId));
+  
+  // Generate profile picture from user data
+  const profilePicture = user?.profilePicture || 
+    (user?.full_name 
+      ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=3b82f6&color=fff&size=128`
+      : DEFAULT_AVATAR); 
 
 
   useEffect(() => {

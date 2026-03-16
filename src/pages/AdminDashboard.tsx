@@ -2,14 +2,27 @@ import { Outlet } from "react-router-dom"
 import Nav from "../components/Dashboard/Nav"
 import AdminSideNav from "../components/AdminDashboard/AdminSideNav"
 import { useEffect, useState } from "react";
+import { useGetUserQuery } from "../features/auth/AuthSlice";
+
+// Default avatar
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=Admin&background=3b82f6&color=fff&size=128';
 
 const AdminDashboard = () => {
   const [sideNavVisible, setSideNavVisible] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState('');
   const [unreadMessagesCount] = useState(0); 
-  const [profilePicture] = useState('https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg');
   const [loading, setLoading] = useState(true); 
+  
+  // Get user data
+  const userId = localStorage.getItem('user_id');
+  const { data: user } = useGetUserQuery(Number(userId));
+  
+  // Generate profile picture from user data
+  const profilePicture = user?.profilePicture || 
+    (user?.full_name 
+      ? `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name)}&background=3b82f6&color=fff&size=128`
+      : DEFAULT_AVATAR); 
   
   useEffect(() => {
     const timer = setTimeout(() => {
