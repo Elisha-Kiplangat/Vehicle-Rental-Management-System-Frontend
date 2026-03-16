@@ -3,6 +3,9 @@ import { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } from '.
 import { toast, Toaster } from 'sonner';
 import { useNavigate } from 'react-router-dom';
 
+// Default avatar image
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=200';
+
 interface UserProfile {
   id: number;
   full_name: string;
@@ -29,13 +32,15 @@ const Profile = () => {
 
   useEffect(() => {
     if (user) {
+      const avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(user.full_name || 'User')}&background=3b82f6&color=fff&size=200`;
+      
       setProfile({
         id: user.user_id,
-        full_name: user.full_name,
-        email: user.email,
-        contact_phone: user.contact_phone,
-        address: user.address,
-        profilePicture: 'https://via.placeholder.com/150',
+        full_name: user.full_name || '',
+        email: user.email || '',
+        contact_phone: user.contact_phone || '',
+        address: user.address || '',
+        profilePicture: user.profilePicture || avatarUrl,
       });
     }
   }, [user]);
@@ -47,11 +52,28 @@ const Profile = () => {
 
   const handleFileChange = (e: any) => {
     if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        toast.error('Please select a valid image file');
+        return;
+      }
+      
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error('Image size should be less than 5MB');
+        return;
+      }
+      
       const reader = new FileReader();
       reader.onload = (event) => {
         setProfile(prevProfile => prevProfile ? { ...prevProfile, profilePicture: event.target?.result as string } : null);
       };
-      reader.readAsDataURL(e.target.files[0]);
+      reader.onerror = () => {
+        toast.error('Failed to read image file');
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -92,7 +114,16 @@ const Profile = () => {
     );
   }
 
-  if (error) return <p>Error loading profile</p>;
+  if (error) return (
+    <div className="container mx-auto p-4">
+      <div className="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" className="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span>Error loading profile. Please try refreshing the page.</span>
+      </div>
+    </div>
+  );
 
   return (
     <div className="container mx-auto p-4">
@@ -189,9 +220,13 @@ const Profile = () => {
         </form>
         <div className="relative ml-0 md:ml-8 mt-4 md:mt-0">
           <img
-            src={profile?.profilePicture || 'https://via.placeholder.com/150'}
+            src={profile?.profilePicture || DEFAULT_AVATAR}
             alt="Profile"
-            className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-md"
+            className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-md border-4 border-blue-200"
+            onError={(e: any) => {
+              e.target.onerror = null;
+              e.target.src = DEFAULT_AVATAR;
+            }}
           />
           {editMode && (
             <button
