@@ -1,20 +1,35 @@
-import { useState } from 'react';
 import { useFetchBookingByIdQuery, Booking } from '../../features/BookingAPI';
+
+const formatLocalDateTime = (dateValue: string) => {
+  const parsedDate = new Date(dateValue);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return dateValue;
+  }
+
+  return parsedDate.toLocaleString(undefined, {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+};
 
 const Bookings = () => {
   const userId = localStorage.getItem('user_id');
   const pollingInterval = 10000;
   const { data: bookings, error, isLoading } = useFetchBookingByIdQuery(Number(userId), { pollingInterval });
-  const [currentPage, setCurrentPage] = useState(0);
-  const bookingsPerPage = 10;
+  const bookingsLimit = 10;
 
-  const handlePageClick = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const offset = currentPage * bookingsPerPage;
-  const currentBookings = bookings ? bookings.slice(offset, offset + bookingsPerPage) : [];
-  const pageCount = bookings ? Math.ceil(bookings.length / bookingsPerPage) : 0;
+  const currentBookings = bookings
+    ? [...bookings]
+        .sort(
+          (firstBooking, secondBooking) =>
+            new Date(secondBooking.booking_date).getTime() - new Date(firstBooking.booking_date).getTime()
+        )
+        .slice(0, bookingsLimit)
+    : [];
 
   if (isLoading) {
     return (
@@ -27,7 +42,13 @@ const Bookings = () => {
   if (error) return <div>Error loading bookings</div>;
 
   return (
-    <div className="overflow-x-auto p-4">
+    <div className="overflow-x-auto p-4 space-y-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-lg font-semibold">Recent Bookings</h2>
+        <p className="text-sm text-gray-500">
+          Showing {currentBookings.length} of {bookings?.length ?? 0}
+        </p>
+      </div>
       <table className="table w-full">
         <thead className='bg-gray-200'>
           <tr>
@@ -41,14 +62,14 @@ const Bookings = () => {
           </tr>
         </thead>
         <tbody>
-          {currentBookings.map((booking: Booking, index: any) => (
+          {currentBookings.map((booking: Booking, index: number) => (
             <tr key={booking.booking_id} className="hover">
-              <th>{offset + index + 1}</th>
+              <th>{index + 1}</th>
               {/* <td>{booking.booking_id}</td> */}
               <td>{booking.vehicle_id}</td>
-              <td>{booking.booking_date}</td>
-              <td>{booking.return_date}</td>
-              <td>${booking.total_amount}</td>
+              <td>{formatLocalDateTime(booking.booking_date)}</td>
+                <td>{formatLocalDateTime(booking.return_date)}</td>
+              <td>Ksh{booking.total_amount}</td>
               <td
                 className={`${
                   booking.booking_status === 'Succeeded'
@@ -62,21 +83,15 @@ const Bookings = () => {
               </td>
             </tr>
           ))}
+          {currentBookings.length === 0 && (
+            <tr>
+              <td colSpan={6} className="text-center py-8 text-gray-500">
+                No bookings found.
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-      <div className="flex justify-center mt-4">
-        <div className="btn-group">
-          {Array.from({ length: pageCount }, (_, index) => (
-            <button
-              key={index}
-              className={`btn mx-1 ${index === currentPage ? 'btn-active' : ''}`}
-              onClick={() => handlePageClick(index)}
-            >
-              {index + 1}
-            </button>
-          ))}
-        </div>
-      </div>
     </div>
   );
 };

@@ -1,6 +1,8 @@
 
 import { useGetUserQuery } from '../../features/auth/AuthSlice';
 
+const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=128';
+
 interface NavProps {
   toggleSideNav: () => void;
   onSearchChange: (query: string) => void;
@@ -89,7 +91,14 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
             <div className="dropdown dropdown-end">
               <div tabIndex={0} role="button" className="btn btn-ghost btn-circle avatar">
                 <div className="w-10 rounded-full">
-                  <img alt="Profile" src={profilePicture} />
+                  <img 
+                    alt="Profile" 
+                    src={profilePicture || DEFAULT_AVATAR}
+                    onError={(e: any) => {
+                      e.target.onerror = null;
+                      e.target.src = DEFAULT_AVATAR;
+                    }}
+                  />
                 </div>
               </div>
               <ul className="menu menu-sm dropdown-content bg-blue-400 rounded-none rounded-b-box mt-1 shadow space-y-2 right-0">

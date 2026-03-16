@@ -66,7 +66,7 @@ export const SignIn = ({ onLoginSuccess }: SignInProps) => {
         >
           {isLoading ? 'Logging in...' : 'Sign In'}
         </button>
-        {isError && <p className="error text-red-500 mt-2">Failed to sign in</p>}
+        {isError && <p className="error text-red-500 mt-2">Incorrect Logins</p>}
         {isSuccess && <p className="success text-green-500 mt-2">Signed in successfully</p>}
       </form>
     </div>
