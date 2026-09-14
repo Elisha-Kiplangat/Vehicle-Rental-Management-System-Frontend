@@ -20,6 +20,7 @@ import V8 from '../../assets/V8.jpg'
 import Skyline from '../../assets/Skyline.jpg'
 import Impreza from '../../assets/Impreza.jpg'
 import CX5 from '../../assets/CX5.jpg'
+import type { TVehicleDetails } from '../../features/VehiclesAPI';
 
 const vehicleImages: { [key: string]: string } = {
   'Audi': `${Audi}`,
@@ -50,19 +51,8 @@ const vehicleImages: { [key: string]: string } = {
 };
 
 interface VehicleDetailsProps {
-  vehicle: {
-    vehicle_id: number;
-    rental_rate: number;
-    availability: boolean;
-    vehicle_spec: {
-      vehicle_type: string;
-      model: string;
-      fuel_type: string | null;
-      seating_capacity: number;
-    };
-    image?: string;
-  };
-  onRent: (vehicle: any) => void; 
+  vehicle: TVehicleDetails;
+  onRent: (vehicle: TVehicleDetails) => void; 
   onBack: () => void;
 }
 

@@ -2,8 +2,9 @@ import { Link, useNavigate } from "react-router-dom";
 // import { store } from "../../app/Store";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHouse, faTimes, faSignOutAlt, faUsers, faCar, faClipboardList, faEnvelope, faChartBar, faBuilding, faMapMarkerAlt, faCog } from '@fortawesome/free-solid-svg-icons';
-// import { logout } from '../../features/auth/AuthContext';
-// import { useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
+import { clearUser } from '../../features/user/UserSlice';
+import { logout } from '../../features/auth/AuthContext';
 
 interface SideNavProps {
   onClose: () => void;
@@ -12,11 +13,13 @@ interface SideNavProps {
 const AdminSideNav = ({ onClose }: SideNavProps) => {
 
   const navigate = useNavigate();
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
   const handleLogOut = () => {
-    // dispatch(logout());
-    navigate('/');
+    dispatch(logout());
+    dispatch(clearUser());
+    onClose();
+    navigate('/', { replace: true });
   };
 
   return (
@@ -100,9 +103,9 @@ const AdminSideNav = ({ onClose }: SideNavProps) => {
             </Link>
           </li>
           <li className="menu-item">
-            <Link to="/" onClick={handleLogOut}>
+            <button type="button" onClick={handleLogOut} className="menu-link w-full text-left">
               <FontAwesomeIcon icon={faSignOutAlt} className="mr-2 text-blue-700" /> Logout
-            </Link>
+            </button>
           </li>
         </ul>
       </div>

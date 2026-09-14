@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useAddVehicleMutation, useUpdateVehicleMutation, useFetchVehicleSpecsQuery } from '../features/VehiclesAPI';
 import { TVehicleDetails } from '../features/VehiclesAPI';
 
@@ -33,22 +33,22 @@ interface Tspec {
   model: string;
 }
 
-const AddVehicle = ({ vehicleToEdit, onClose }: AddVehicleProps) => {
-  const initialAddFormData: VehicleSpecs = {
-    vehicle_type: '',
-    manufacturer: '',
-    model: '',
-    year: 2020,
-    fuel_type: '',
-    engine_capacity: '',
-    transmission: '',
-    seating_capacity: 0,
-    color: '',
-    features: '',
-    rental_rate: 0,
-    availability: true,
-  };
+const initialAddFormData: VehicleSpecs = {
+  vehicle_type: '',
+  manufacturer: '',
+  model: '',
+  year: 2020,
+  fuel_type: '',
+  engine_capacity: '',
+  transmission: '',
+  seating_capacity: 0,
+  color: '',
+  features: '',
+  rental_rate: 0,
+  availability: true,
+};
 
+const AddVehicle = ({ vehicleToEdit, onClose }: AddVehicleProps) => {
   const initialEditFormData: EditableVehicleFields = {
     rental_rate: 0,
     availability: true,
@@ -74,23 +74,45 @@ const AddVehicle = ({ vehicleToEdit, onClose }: AddVehicleProps) => {
     }
   }, [vehicleToEdit]);
 
-  const handleAddChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
-    setAddFormData({
-      ...addFormData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+  const handleAddChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const target = e.currentTarget;
+    const { name } = target;
+
+    const nextValue =
+      target instanceof HTMLInputElement && target.type === 'checkbox'
+        ? target.checked
+        : name === 'year' || name === 'seating_capacity' || name === 'rental_rate'
+          ? Number(target.value)
+          : target.value;
+
+    setAddFormData(prev => ({
+      ...prev,
+      [name]: nextValue,
+    }));
   };
 
-  const handleEditChange = (e: any) => {
-    const { name, value, type, checked } = e.target;
-    setEditFormData({
-      ...editFormData,
-      [name]: type === 'checkbox' ? checked : value,
-    });
+  const handleEditChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const target = e.currentTarget;
+    const { name } = target;
+
+    const nextValue =
+      target instanceof HTMLInputElement && target.type === 'checkbox'
+        ? target.checked
+        : name === 'rental_rate' || name === 'vehicle_specification_id'
+          ? Number(target.value)
+          : target.value;
+
+    setEditFormData(prev => ({
+      ...prev,
+      [name]: nextValue,
+    }));
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       if (vehicleToEdit) {

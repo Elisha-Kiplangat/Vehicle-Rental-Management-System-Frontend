@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, type ChangeEvent, type FormEvent } from 'react';
 import { useGetUserQuery, useUpdateUserMutation, useDeleteUserMutation } from '../../features/auth/AuthSlice';
 import { toast, Toaster } from 'sonner';
 import { useNavigate } from 'react-router-dom';
@@ -45,12 +45,12 @@ const Profile = () => {
     }
   }, [user]);
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setProfile(prevProfile => prevProfile ? { ...prevProfile, [name]: value } : null);
   };
 
-  const handleFileChange = (e: any) => {
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       
@@ -77,14 +77,14 @@ const Profile = () => {
     }
   };
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (profile) {
       try {
         await updateUser(profile).unwrap();
         setEditMode(false);
         toast.success('Profile updated successfully!');
-      } catch (error) {
+      } catch {
         toast.error('Failed to update profile.');
       }
     }
@@ -95,7 +95,7 @@ const Profile = () => {
       await deleteUser(Number(userId)).unwrap();
       toast.success('Sad to see you go :) Account deleted successfully!');
       navigate('/');
-    } catch (error) {
+    } catch {
       toast.error('Failed to delete account.');
     }
   };
@@ -223,9 +223,9 @@ const Profile = () => {
             src={profile?.profilePicture || DEFAULT_AVATAR}
             alt="Profile"
             className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-md border-4 border-blue-200"
-            onError={(e: any) => {
-              e.target.onerror = null;
-              e.target.src = DEFAULT_AVATAR;
+            onError={(e) => {
+              e.currentTarget.onerror = null;
+              e.currentTarget.src = DEFAULT_AVATAR;
             }}
           />
           {editMode && (

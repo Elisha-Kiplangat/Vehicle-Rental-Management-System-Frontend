@@ -27,14 +27,15 @@ const Checkout = ({ vehicle, onBack }: CheckoutProps) => {
   const [createBooking] = useAddBookingMutation();
   const [amountToPay, setAmountToPay] = useState<number>(0);
 
-  const calculateAmount = () => {
-    if (!startDate || !endDate) return 0;
+  useEffect(() => {
+    if (!startDate || !endDate) {
+      setAmountToPay(0);
+      return;
+    }
+
     const days = Math.ceil((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     const amount = days * vehicle.rental_rate;
     setAmountToPay(amount * 100000);
-  };
-    useEffect(() => {
-    calculateAmount();
   }, [startDate, endDate, vehicle.rental_rate]);
 
   const handleRentNow = async () => {

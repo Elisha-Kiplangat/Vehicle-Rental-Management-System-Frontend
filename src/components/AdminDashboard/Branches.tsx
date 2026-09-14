@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { SelectChangeEvent } from '@mui/material/Select';
-import { Container, Typography, Button, Box, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { useState, type ChangeEvent, type FormEvent } from 'react';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { Container, Typography, Button, Box, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { useFetchBranchesQuery, useAddBranchesMutation } from '../../features/BranchesApi';
+import type { Branches as BranchApi } from '../../features/BranchesApi';
 import { useFetchLocationsQuery } from '../../features/LocationsApi';
+import type { Location } from '../../features/LocationsApi';
 
-interface Branch {
-  branch_id: number;
+type NewBranchForm = {
   name: string;
   contact_phone: string;
-  created_at: string;
-  updated_at: string;
+  location_id: string;
 }
 
 const Branches = () => {
@@ -21,13 +21,17 @@ const Branches = () => {
   const [selectAll, setSelectAll] = useState<boolean>(false);
   const [expandedBranchId, setExpandedBranchId] = useState<number | null>(null);
   const [showAddForm, setShowAddForm] = useState<boolean>(false);
-  const [newBranch, setNewBranch] = useState({ name: '', contact_phone: '', location_id: 0 });
+  const [newBranch, setNewBranch] = useState<NewBranchForm>({
+    name: '',
+    contact_phone: '',
+    location_id: '',
+  });
 
   const handleSelectAll = () => {
     if (selectAll) {
       setSelectedBranches([]);
     } else {
-      setSelectedBranches(branches ? branches.map((branch: Branch) => branch.branch_id) : []);
+      setSelectedBranches(branches ? branches.map((branch: BranchApi) => branch.branch_id) : []);
     }
     setSelectAll(!selectAll);
   };
@@ -42,21 +46,28 @@ const Branches = () => {
     setExpandedBranchId(expandedBranchId === id ? null : id);
   };
 
-  const handleChange = (e: React.ChangeEvent<{ name?: string; value: string }>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setNewBranch({ ...newBranch, [name as string]: value });
+    setNewBranch({ ...newBranch, [name]: value });
   };
-  const handleSelectChange = (event: SelectChangeEvent<number>) => {
-  const name = event.target.name;
-  const value = event.target.value;
-  setNewBranch({ ...newBranch, [name]: value });
-};
+  const handleSelectChange = (event: SelectChangeEvent<string>) => {
+    setNewBranch(prev => ({
+      ...prev,
+      location_id: event.target.value,
+    }));
+  };
 
-  const handleAddBranch = async (e: React.FormEvent) => {
+  const handleAddBranch = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
     try {
-      await addBranch(newBranch).unwrap();
-      setNewBranch({ name: '', contact_phone: '', location_id: 0 });
+      const payload: Partial<BranchApi> = {
+        ...newBranch,
+        location_id: Number(newBranch.location_id),
+      };
+
+      await addBranch(payload).unwrap();
+      setNewBranch({ name: '', contact_phone: '', location_id: '' });
       setShowAddForm(false);
     } catch (err) {
       console.error('Failed to add branch: ', err);
@@ -123,11 +134,11 @@ const Branches = () => {
   id="location_id"
   name="location_id"
   value={newBranch.location_id}
-  onChange={handleSelectChange} // Use the new handler here
+  onChange={handleSelectChange}
   required
 >
-  {locations && locations.map((location: any) => (
-    <MenuItem key={location.location_id} value={location.location_id}>
+  {locations?.map((location: Location) => (
+    <MenuItem key={location.location_id} value={String(location.location_id)}>
       {location.name}
     </MenuItem>
   ))}
@@ -158,7 +169,7 @@ const Branches = () => {
             </tr>
           </thead>
           <tbody>
-            {branches && branches.map((branch: Branch) => (
+            {branches && branches.map((branch: BranchApi) => (
               <>
                 <tr key={branch.branch_id}>
                   <td>

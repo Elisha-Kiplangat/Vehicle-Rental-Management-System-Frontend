@@ -1,6 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes, faCar, faUser, faClipboardList, faEnvelope, faCog, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import { useDispatch } from "react-redux";
+import { clearUser } from '../../features/user/UserSlice';
+import { logout } from '../../features/auth/AuthContext';
 
 interface SideNavProps {
   onClose: () => void;
@@ -9,10 +12,14 @@ interface SideNavProps {
 const SideNav = ({onClose}: SideNavProps) => {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogout = async () => {
     try {
-      navigate('/');
+      dispatch(logout());
+      dispatch(clearUser());
+      onClose();
+      navigate('/', { replace: true });
     } catch (error) {
       console.error('Failed to logout:', error);
     }
@@ -67,10 +74,10 @@ const SideNav = ({onClose}: SideNavProps) => {
             </a>
           </li>
           <li className="menu-item">
-            <a className="menu-link" onClick={handleLogout}>
+            <button type="button" className="menu-link w-full text-left" onClick={handleLogout}>
               <FontAwesomeIcon icon={faSignOutAlt} className="mr-2 text-blue-700" />
               Logout
-            </a>
+            </button>
           </li>
         </ul>
       </div>

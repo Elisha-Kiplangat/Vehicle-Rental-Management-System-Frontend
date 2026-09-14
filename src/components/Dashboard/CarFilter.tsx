@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 
 interface CarFilterProps {
   onFilterChange: (filter: { vehicleType: string, seatingCapacity: string }) => void;
@@ -8,13 +8,13 @@ const CarFilter = ({ onFilterChange }: CarFilterProps) => {
   const [selectedVehicleType, setSelectedVehicleType] = useState('All');
   const [selectedSeatingCapacity, setSelectedSeatingCapacity] = useState('All');
 
-  const handleVehicleTypeChange = (e: any) => {
+  const handleVehicleTypeChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const vehicleType = e.target.value;
     setSelectedVehicleType(vehicleType);
     onFilterChange({ vehicleType, seatingCapacity: selectedSeatingCapacity });
   };
 
-  const handleSeatingCapacityChange = (e: any) => {
+  const handleSeatingCapacityChange = (e: ChangeEvent<HTMLSelectElement>) => {
     const seatingCapacity = e.target.value;
     setSelectedSeatingCapacity(seatingCapacity);
     onFilterChange({ vehicleType: selectedVehicleType, seatingCapacity });

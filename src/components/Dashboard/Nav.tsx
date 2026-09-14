@@ -1,4 +1,5 @@
 
+import { type ChangeEvent } from 'react';
 import { useGetUserQuery } from '../../features/auth/AuthSlice';
 
 const DEFAULT_AVATAR = 'https://ui-avatars.com/api/?name=User&background=3b82f6&color=fff&size=128';
@@ -14,7 +15,7 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
   const userId = localStorage.getItem('user_id');
   const { data: user, error, isLoading } = useGetUserQuery(Number(userId));
 
-  const handleSearch = (e: any) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     onSearchChange(e.target.value);
   };
 
@@ -94,9 +95,9 @@ const Nav = ({ toggleSideNav, onSearchChange, unreadMessagesCount, profilePictur
                   <img 
                     alt="Profile" 
                     src={profilePicture || DEFAULT_AVATAR}
-                    onError={(e: any) => {
-                      e.target.onerror = null;
-                      e.target.src = DEFAULT_AVATAR;
+                    onError={(e) => {
+                      e.currentTarget.onerror = null;
+                      e.currentTarget.src = DEFAULT_AVATAR;
                     }}
                   />
                 </div>
