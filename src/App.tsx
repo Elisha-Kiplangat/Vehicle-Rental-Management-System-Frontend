@@ -19,6 +19,7 @@ import Locations from "./components/AdminDashboard/Locations";
 import Branches from "./components/AdminDashboard/Branches";
 import AdminHome from "./components/AdminDashboard/AdminHome";
 import ErrorPage from "./pages/ErrorPage";
+import ForgotPassword from "./pages/ForgotPassword";
 import { store } from "./app/store";
 import { Provider } from "react-redux";
 import PrivateRoute from "./features/auth/PrivateRoute";
@@ -33,6 +34,7 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<Contact />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/success" element={<SuccessPage />} />
         <Route path="/cancelled" element={<CancelPage />} />
         <Route path="/dashboard/user" element={<PrivateRoute requiredRole="user"><UserDashboard /></PrivateRoute>}>
