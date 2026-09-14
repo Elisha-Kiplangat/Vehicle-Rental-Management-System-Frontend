@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, type FormEvent } from 'react';
 import { useRegisterUserMutation } from '../features/auth/AuthSlice';
 
 interface SignUpProps {
@@ -14,7 +14,7 @@ export const SignUp = ({ onSignUpSuccess }: SignUpProps) => {
   const [password, setPassword] = useState('');
   const [registerUser, { isLoading, isError, isSuccess }] = useRegisterUserMutation();
 
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     await registerUser({ full_name, email, contact_phone, address, password });
   };

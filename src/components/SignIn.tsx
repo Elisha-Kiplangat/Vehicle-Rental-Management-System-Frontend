@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { useLoginUserMutation } from '../features/auth/AuthSlice';
 import { useNavigate } from 'react-router-dom';
 import { setUser } from '../features/user/UserSlice';
 import { useDispatch } from 'react-redux';
+import { login } from '../features/auth/AuthContext';
 
 interface SignInProps {
   onLoginSuccess?: () => void;
@@ -15,26 +16,18 @@ export const SignIn = ({ onLoginSuccess }: SignInProps) => {
   const [loginUser, { isLoading, isError, isSuccess }] = useLoginUserMutation();
   const dispatch = useDispatch();
 
-  const handleSubmit = async (e: any) => {
+  const getDashboardPath = (role: string) => (role.includes('admin') ? '/dashboard/admin' : '/dashboard/user');
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const data = await loginUser({ email, password }).unwrap();
       dispatch(setUser(data));
-      localStorage.setItem('token', data.token);
+      dispatch(login({ token: data.token, role: data.role }));
       localStorage.setItem('user_id', data.user_id.toString());
-      localStorage.setItem('role', data.role);
 
-      if (onLoginSuccess) {
-        onLoginSuccess();
-      }
-
-      setTimeout(() => {
-        if (data.role === 'user') {
-          navigate('/dashboard/user');
-        } else {
-          navigate('/dashboard/admin');
-        }
-      }, 100);
+      navigate(getDashboardPath(data.role), { replace: true });
+      onLoginSuccess?.();
     } catch (error) {
       console.error('Login error:', error);
     }
@@ -58,7 +51,13 @@ export const SignIn = ({ onLoginSuccess }: SignInProps) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <a className="text-sm no-underline my-4" href="#">Forgot Password?</a>
+        <button
+          type="button"
+          className="text-sm no-underline my-4 text-blue-600 hover:text-blue-800"
+          onClick={() => navigate('/forgot-password')}
+        >
+          Forgot Password?
+        </button>
         <button
           className="bg-purple-700 text-white text-xs py-2 px-10 border border-transparent rounded-lg font-semibold tracking-wide uppercase mt-4 cursor-pointer"
           type="submit"
