@@ -31,7 +31,7 @@ export interface LoginResponse {
     role: string
 }
 
-export interface RegisterResponse { }
+export type RegisterResponse = void;
 
 
 export const apiSlice = createApi({
